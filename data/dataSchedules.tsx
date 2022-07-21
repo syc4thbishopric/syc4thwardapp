@@ -3,7 +3,7 @@ import { getScheduleDate } from "../shared/utils/date.util"
 
 export const dataSundayScheduleTimes: IScheduleTime[] = [
   {
-    time: "9:00 AM",
+    time: "1:30 PM",
     color: "green",
     events: [
       {
@@ -11,6 +11,13 @@ export const dataSundayScheduleTimes: IScheduleTime[] = [
         title: "Sacrament",
         subtitle: "In-Person Meeting",
         paragraph: "60 Min. All Individuals",
+        button: {
+          text: "Sacrament Program",
+          link: {
+            url: "https://drive.google.com/file/d/1NHXf3uF3i_ylhC7WhA80Eu3pvQDCaYhf/view?usp=sharing",
+            external: true,
+          },
+        },
         image: {
           src: "/images/image-cards/sacrament.webp",
         },
@@ -18,12 +25,12 @@ export const dataSundayScheduleTimes: IScheduleTime[] = [
       {
         repeat: [1, 2, 3, 4, 5],
         title: "Sacrament Live Stream",
-        subtitle: "YouTube Live Stream",
+        subtitle: "Zoom Webinar",
         paragraph: "60 Min. All Individuals",
         button: {
           text: "Join Live Stream",
           link: {
-            url: "https://www.youtube.com/channel/UCUU3gRF06MHmbzNGMIl2jrA/live",
+            url: "https://zoom.us/j/96126295930",
             external: true,
           },
         },
@@ -35,7 +42,7 @@ export const dataSundayScheduleTimes: IScheduleTime[] = [
     ],
   },
   {
-    time: "10:00 AM",
+    time: "2:30 PM",
     color: "blue",
     events: [
       {

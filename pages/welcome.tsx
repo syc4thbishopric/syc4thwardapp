@@ -9,7 +9,7 @@ function Welcome() {
   return (
     <>
       <Head>
-        <title>Maples 3rd Ward - Welcome</title>
+        <title>Sycamores 4th Ward - Welcome</title>
       </Head>
       <PageHeader title="Welcome" />
       <Layout>

@@ -13,7 +13,7 @@ function Home() {
   return (
     <Layout>
       <Head>
-        <title>Maples 3rd Ward</title>
+        <title>Sycamores 4th Ward</title>
       </Head>
       <div className="pt-16">
         <HeroCard {...dataSundayMeeting} />
