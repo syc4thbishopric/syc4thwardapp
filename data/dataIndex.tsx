@@ -70,10 +70,23 @@ export const dataFaceCards: IContactCard[] = [
     ],
     button: {
       text: "Schedule",
-      link: {
-        url: "https://calendly.com/syc4thbishopric/bishop",
-        calendly: true,
-      },
+      link: [
+        {
+          url: "https://calendly.com/syc4thbishopric/interview-10",
+          label: { text: "10 Minutes Appt" },
+          calendly: true,
+        },
+        {
+          url: "https://calendly.com/syc4thbishopric/interview-30",
+          label: { text: "30 Minutes Appt" },
+          calendly: true,
+        },
+        {
+          url: "https://calendly.com/syc4thbishopric/interview-60",
+          label: { text: "60 Minutes Appt" },
+          calendly: true,
+        },
+      ],
     },
     hidden: false,
   },
