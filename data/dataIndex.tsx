@@ -110,7 +110,7 @@ export const dataFaceCards: IContactCard[] = [
     button: {
       text: "Schedule",
       link: {
-        url: "https://calendly.com/syc4thcounselors/interview",
+        url: "https://calendly.com/syc4thcounselors/interview-10",
         calendly: true,
       },
     },
