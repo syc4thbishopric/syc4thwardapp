@@ -126,7 +126,7 @@ export const dataMiniCards: IMiniCard[] = [
       text: "Schedule",
       link: [
         {
-          url: "https://calendly.com/syc4thcounselors/temple",
+          url: "https://calendly.com/syc4thcounselors/interview-10",
           label: { text: "Expired less than 6 months" },
           calendly: true,
         },
