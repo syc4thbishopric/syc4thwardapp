@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "format": "prettier --config ./.prettierrc --write \"**/*.{ts,tsx,json,md,scss,css}\"",
-    "lint": "npx next lint"
+    "lint": "npx next lint",
+    "export": "next export"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.3",
