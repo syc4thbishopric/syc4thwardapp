@@ -1,5 +1,6 @@
 import { IAnnouncement } from "../../components/modules/announcements/Announcement"
 import { isBeforeNow } from "./date.util"
+import fs from 'fs'
 
 const keepForHoursFromStart = 2
 
@@ -36,4 +37,19 @@ export function generateAnnouncementKey(announcement: IAnnouncement) {
     return `${announcement.title}-${subDateKeys.join("-")}`
   }
   return announcement.title
+}
+
+export function csvJSON(rawData, delimiter = ',') {
+  let data = rawData.replace(/['"]+/g, '');
+  const titles = data.slice(0, data.indexOf('\n')).split(delimiter);
+  return data
+    .slice(data.indexOf('\n') + 1)
+    .split('\n')
+    .map(v => {
+      const values = v.split(delimiter);
+      return titles.reduce(
+        (obj, title, index) => ((obj[title] = values[index]), obj),
+        {}
+      );
+    });
 }

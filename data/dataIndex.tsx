@@ -73,17 +73,17 @@ export const dataFaceCards: IContactCard[] = [
       link: [
         {
           url: "https://calendly.com/syc4thbishopric/interview-10",
-          label: { text: "10 Minutes Appt" },
+          label: { text: "10 Minute Appt" },
           calendly: true,
         },
         {
           url: "https://calendly.com/syc4thbishopric/interview-30",
-          label: { text: "30 Minutes Appt" },
+          label: { text: "30 Minute Appt" },
           calendly: true,
         },
         {
           url: "https://calendly.com/syc4thbishopric/interview-60",
-          label: { text: "60 Minutes Appt" },
+          label: { text: "60 Minute Appt" },
           calendly: true,
         },
       ],

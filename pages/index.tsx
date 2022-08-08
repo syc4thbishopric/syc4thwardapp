@@ -7,9 +7,36 @@ import ContactCard, { IContactCard } from "../components/modules/cards/ContactCa
 import MiniCard, { IMiniCard } from "../components/modules/cards/MiniCard"
 import ImageCard, { IImageCard } from "../components/modules/cards/ImageCard"
 import { dataSundayMeeting, dataAnnouncements, dataFaceCards, dataMiniCards, dataImageCards } from "../data/dataIndex"
-import { filterAndSortAnnouncements, generateAnnouncementKey } from "../shared/utils/announcement.util"
+import { filterAndSortAnnouncements, generateAnnouncementKey, csvJSON } from "../shared/utils/announcement.util"
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import moment from 'moment'
+
+
 
 function Home() {
+  const [announcements, setAnnouncements] = useState<IAnnouncement[]|undefined>([])
+
+  useEffect(() => {
+      axios.get('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&tq=SELECT%20A,B,C,D')
+          .then(function (response) {
+            const jsonData = csvJSON(response.data)
+            const finalAnnouncements = jsonData.map(item => {
+                const newDate = moment(item.date + item.time, 'YYYY-MM-DDLT').toDate()
+                return {
+                    date: newDate,
+                    title: item.title,
+                    description: item.description
+                }
+            })
+            setAnnouncements(finalAnnouncements);
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+  }, [])
+
   return (
     <Layout>
       <Head>
@@ -21,43 +48,10 @@ function Home() {
       {dataAnnouncements.length > 0 && (
         <>
           <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
-          {/* <div className="pt-5">
-            <div className="bg-green-50 shadow-xl rounded-lg border-2 border-green-500">
-              <div className="px-4 py-5 sm:p-6">
-                <div className="sm:flex sm:items-start sm:justify-between">
-                  <div>
-                    <h3 className="text-lg leading-6 font-bold text-gray-900">Tithing Settlement</h3>
-                    <div className="mt-1 pr-2 flex items-center">
-                      <Icon name="calendar" className="h-4 w-4 mr-2 mb-0.5 text-gray-400" />
-                      <time>October 15th - December 31st</time>
-                    </div>
-                  </div>
-                  <div className="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
-                    <PrimaryButton
-                      type="dark"
-                      color="green"
-                      link={{
-                        url: "https://calendly.com/ssr3-bishop/tithing",
-                        calendly: true,
-                      }}
-                    >
-                      Schedule
-                    </PrimaryButton>
-                  </div>
-                </div>
-                <div className="bg-white border border-gray-200 mt-3 text-base p-5 rounded-xl">
-                  <p>
-                    Please schedule a time for your family. Tithing settlement is an opportunity for each ward member to meet with the bishop, to make sure his
-                    or her donations records are correct, and to declare to the bishop his or her tithing status.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div> */}
           <div className="mt-7">
             <div className="relative max-w-xl mx-auto lg:max-w-7xl">
               <div className="grid gap-4 lg:grid-cols-2">
-                {filterAndSortAnnouncements(dataAnnouncements).map((announcement: IAnnouncement) => (
+                {filterAndSortAnnouncements(announcements).map((announcement: IAnnouncement) => (
                   <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
                     <Announcement {...announcement} />
                   </div>
