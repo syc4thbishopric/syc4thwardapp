@@ -7,34 +7,24 @@ import ContactCard, { IContactCard } from "../components/modules/cards/ContactCa
 import MiniCard, { IMiniCard } from "../components/modules/cards/MiniCard"
 import ImageCard, { IImageCard } from "../components/modules/cards/ImageCard"
 import { dataSundayMeeting, dataAnnouncements, dataFaceCards, dataMiniCards, dataImageCards } from "../data/dataIndex"
-import { filterAndSortAnnouncements, generateAnnouncementKey, csvJSON } from "../shared/utils/announcement.util"
+import {
+    filterAndSortAnnouncements,
+    generateAnnouncementKey,
+    csvJSON,
+    getGeneralAnnouncements,
+    getYoungMensAnnouncements
+} from "../shared/utils/announcement.util"
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import moment from 'moment'
 
 
 
 function Home() {
-  const [announcements, setAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [generalAnnouncements, setGeneralAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [youngMenAnnouncements, setYoungMenAnnouncements] = useState<IAnnouncement[]|undefined>([])
 
   useEffect(() => {
-      axios.get('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&tq=SELECT%20A,B,C,D')
-          .then(function (response) {
-            const jsonData = csvJSON(response.data)
-            const finalAnnouncements = jsonData.map(item => {
-                const newDate = moment(item.date + item.time, 'YYYY-MM-DDLT').toDate()
-                return {
-                    date: newDate,
-                    title: item.title,
-                    description: item.description
-                }
-            })
-            setAnnouncements(finalAnnouncements);
-          })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })
+      getGeneralAnnouncements().then(res => {setGeneralAnnouncements(res)});
+      getYoungMensAnnouncements().then(res => {setYoungMenAnnouncements(res)});
   }, [])
 
   return (
@@ -45,13 +35,16 @@ function Home() {
       <div className="pt-16">
         <HeroCard {...dataSundayMeeting} />
       </div>
-      {dataAnnouncements.length > 0 && (
+      <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
+      {generalAnnouncements.length < 1 && youngMenAnnouncements.length < 1  &&
+        <p className="text-lg text-gray-500 mt-7 text-center">No Announcements</p>
+      }
+      {generalAnnouncements.length > 0 &&
         <>
-          <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
           <div className="mt-7">
             <div className="relative max-w-xl mx-auto lg:max-w-7xl">
               <div className="grid gap-4 lg:grid-cols-2">
-                {filterAndSortAnnouncements(announcements).map((announcement: IAnnouncement) => (
+                {filterAndSortAnnouncements(generalAnnouncements).map((announcement: IAnnouncement) => (
                   <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
                     <Announcement {...announcement} />
                   </div>
@@ -60,7 +53,24 @@ function Home() {
             </div>
           </div>
         </>
-      )}
+      }
+      {console.log(youngMenAnnouncements)}
+      {youngMenAnnouncements.length > 0 &&
+        <>
+          <p className="text-lg text-gray-500 mt-7 text-center">Young Men</p>
+          <div className="mt-7">
+            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
+              <div className="grid gap-4 lg:grid-cols-2">
+                {filterAndSortAnnouncements(youngMenAnnouncements).map((announcement: IAnnouncement) => (
+                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
+                    <Announcement {...announcement} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      }
       {dataFaceCards.filter((card) => !card.hidden).length > 0 && (
         <>
           <SectionHeader title="Meet with a member of the bishopric" subtitle="Select a time and quickly schedule your appointment." />

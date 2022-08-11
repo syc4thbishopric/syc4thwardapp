@@ -259,6 +259,22 @@ export const dataImageCards: IImageCard[] = [
     hidden: false,
   },
   {
+    title: "Young Men",
+    subtitle: "Trust in the Lord",
+    paragraph: "Find information about what we are doing in our Young Men's group.",
+    image: {
+      src: "/images/young-men/background.jpg",
+    },
+    button: {
+      text: "Learn More",
+      link: {
+        url: "https://www.churchofjesuschrist.org/calendar/month?date=2022-7-21&lang=eng",
+        external: true,
+      },
+    },
+    hidden: false,
+  },
+  {
     title: "Ward Mission",
     subtitle: "Inspire and Invite Others to Come Unto Christ",
     paragraph: "Find out how to help members and friends of other faiths embrace the restored gospel.",

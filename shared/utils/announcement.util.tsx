@@ -1,6 +1,8 @@
 import { IAnnouncement } from "../../components/modules/announcements/Announcement"
 import { isBeforeNow } from "./date.util"
 import fs from 'fs'
+import axios from "axios";
+import moment from "moment";
 
 const keepForHoursFromStart = 2
 
@@ -37,6 +39,56 @@ export function generateAnnouncementKey(announcement: IAnnouncement) {
     return `${announcement.title}-${subDateKeys.join("-")}`
   }
   return announcement.title
+}
+
+export async function getGeneralAnnouncements(): Promise<IAnnouncement[]> {
+    let finalAnnouncements = []
+    await axios.get('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=GeneralAnnouncements&tq=SELECT%20A,B,C,D')
+          .then(function (response) {
+            const jsonData = csvJSON(response.data)
+              if (jsonData[0].title !== 'title') {
+                 finalAnnouncements = jsonData.map(item => {
+                    if (item.title && item.date && item.time && item.description) {
+                        const newDate = moment(item.date + item.time, 'YYYY-MM-DDLT').toDate()
+                        return {
+                            date: newDate,
+                            title: item.title,
+                            description: item.description
+                        }
+                    }
+                }).filter(item => {return item !== undefined})
+            }
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+    return finalAnnouncements;
+}
+
+export async function getYoungMensAnnouncements(): Promise<IAnnouncement[]> {
+    let finalAnnouncements = [ ]
+    await axios.get('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=YoungMen&tq=SELECT%20A,B,C,D')
+          .then(function (response) {
+            const jsonData = csvJSON(response.data)
+              if (jsonData[0].title !== 'title') {
+                finalAnnouncements = jsonData.map(item => {
+                    if (item.title && item.date && item.time && item.description) {
+                        const newDate = moment(item.date + item.time, 'YYYY-MM-DDLT').toDate()
+                        return {
+                            date: newDate,
+                            title: item.title,
+                            description: item.description
+                        }
+                    }
+                }).filter(item => {return item !== undefined})
+            }
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+    return finalAnnouncements;
 }
 
 export function csvJSON(rawData, delimiter = ',') {
