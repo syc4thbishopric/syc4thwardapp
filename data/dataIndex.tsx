@@ -236,7 +236,7 @@ export const dataImageCards: IImageCard[] = [
     button: {
       text: "Learn More",
       link: {
-        url: "https://www.churchofjesuschrist.org/calendar/month?date=2022-7-21&lang=eng",
+        url: "https://www.facebook.com/groups/640925966077761",
         external: true,
       },
     },
@@ -268,7 +268,7 @@ export const dataImageCards: IImageCard[] = [
     button: {
       text: "Learn More",
       link: {
-        url: "https://www.churchofjesuschrist.org/calendar/month?date=2022-7-21&lang=eng",
+        url: "https://www.facebook.com/groups/1924770184441930",
         external: true,
       },
     },

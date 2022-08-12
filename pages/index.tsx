@@ -11,20 +11,27 @@ import {
     filterAndSortAnnouncements,
     generateAnnouncementKey,
     csvJSON,
-    getGeneralAnnouncements,
-    getYoungMensAnnouncements
+    getAnnouncements
 } from "../shared/utils/announcement.util"
 import React, { useState, useEffect } from 'react'
 
 
 
 function Home() {
+  const [eldersAnnouncements, setEldersAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [reliefSocietyAnnouncements, setReliefSocietyAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [youngWomenAnnouncements, setYoungWomenAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [primaryAnnouncements, setPrimaryAnnouncements] = useState<IAnnouncement[]|undefined>([])
   const [generalAnnouncements, setGeneralAnnouncements] = useState<IAnnouncement[]|undefined>([])
   const [youngMenAnnouncements, setYoungMenAnnouncements] = useState<IAnnouncement[]|undefined>([])
 
   useEffect(() => {
-      getGeneralAnnouncements().then(res => {setGeneralAnnouncements(res)});
-      getYoungMensAnnouncements().then(res => {setYoungMenAnnouncements(res)});
+      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=GeneralAnnouncements&tq=SELECT%20A,B,C,D').then(res => {setGeneralAnnouncements(res)});
+      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=YoungMen&tq=SELECT%20A,B,C,D').then(res => {setYoungMenAnnouncements(res)});
+      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=YoungWomen&tq=SELECT%20A,B,C,D').then(res => {setYoungWomenAnnouncements(res)});
+      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=Primary&tq=SELECT%20A,B,C,D').then(res => {setPrimaryAnnouncements(res)});
+      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=ReliefSociety&tq=SELECT%20A,B,C,D').then(res => {setReliefSocietyAnnouncements(res)});
+      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=Elders&tq=SELECT%20A,B,C,D').then(res => {setEldersAnnouncements(res)});
   }, [])
 
   return (
@@ -54,6 +61,54 @@ function Home() {
           </div>
         </>
       }
+      {reliefSocietyAnnouncements.length > 0 &&
+        <>
+          <p className="text-lg text-gray-500 mt-7 text-center">Relief Society</p>
+          <div className="mt-7">
+            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
+              <div className="grid gap-4 lg:grid-cols-2">
+                {filterAndSortAnnouncements(reliefSocietyAnnouncements).map((announcement: IAnnouncement) => (
+                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
+                    <Announcement {...announcement} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      }
+      {eldersAnnouncements.length > 0 &&
+        <>
+          <p className="text-lg text-gray-500 mt-7 text-center">Elders</p>
+          <div className="mt-7">
+            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
+              <div className="grid gap-4 lg:grid-cols-2">
+                {filterAndSortAnnouncements(eldersAnnouncements).map((announcement: IAnnouncement) => (
+                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
+                    <Announcement {...announcement} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      }
+      {youngWomenAnnouncements.length > 0 &&
+        <>
+          <p className="text-lg text-gray-500 mt-7 text-center">Young Women</p>
+          <div className="mt-7">
+            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
+              <div className="grid gap-4 lg:grid-cols-2">
+                {filterAndSortAnnouncements(youngWomenAnnouncements).map((announcement: IAnnouncement) => (
+                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
+                    <Announcement {...announcement} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      }
       {youngMenAnnouncements.length > 0 &&
         <>
           <p className="text-lg text-gray-500 mt-7 text-center">Young Men</p>
@@ -61,6 +116,22 @@ function Home() {
             <div className="relative max-w-xl mx-auto lg:max-w-7xl">
               <div className="grid gap-4 lg:grid-cols-2">
                 {filterAndSortAnnouncements(youngMenAnnouncements).map((announcement: IAnnouncement) => (
+                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
+                    <Announcement {...announcement} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      }
+      {primaryAnnouncements.length > 0 &&
+        <>
+          <p className="text-lg text-gray-500 mt-7 text-center">Primary</p>
+          <div className="mt-7">
+            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
+              <div className="grid gap-4 lg:grid-cols-2">
+                {filterAndSortAnnouncements(primaryAnnouncements).map((announcement: IAnnouncement) => (
                   <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
                     <Announcement {...announcement} />
                   </div>
