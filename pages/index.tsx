@@ -54,7 +54,6 @@ function Home() {
           </div>
         </>
       }
-      {console.log(youngMenAnnouncements)}
       {youngMenAnnouncements.length > 0 &&
         <>
           <p className="text-lg text-gray-500 mt-7 text-center">Young Men</p>
