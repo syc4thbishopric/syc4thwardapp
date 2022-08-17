@@ -43,7 +43,8 @@ function Home() {
         <HeroCard {...dataSundayMeeting} />
       </div>
       <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
-      {generalAnnouncements.length < 1 && youngMenAnnouncements.length < 1  &&
+      {generalAnnouncements.length < 1 && youngMenAnnouncements.length < 1  && reliefSocietyAnnouncements.length < 1  &&
+       eldersAnnouncements.length < 1  && youngWomenAnnouncements.length < 1  && primaryAnnouncements.length < 1  &&
         <p className="text-lg text-gray-500 mt-7 text-center">No Announcements</p>
       }
       {generalAnnouncements.length > 0 &&

@@ -59,7 +59,7 @@ export const dataImageCards: IImageCard[] = [
         external: false,
       },
     },
-    hidden: true,
+    hidden: false,
   },
   {
     title: "Gail Miller Resource Center Assignments",

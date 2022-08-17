@@ -211,7 +211,7 @@ export const dataImageCards: IImageCard[] = [
   },
   {
     title: "Welfare & Service",
-    subtitle: "Where Charity Never Faileth",
+    subtitle: "Embark in the Service of God",
     paragraph: "View information about all of the upcoming service opportunities this year.",
     image: {
       src: "/images/image-cards/welfare-and-service.png",
@@ -220,11 +220,11 @@ export const dataImageCards: IImageCard[] = [
     button: {
       text: "Learn More",
       link: {
-        url: "/welfare",
-        calendly: false,
+        url: "https://www.signupgenius.com/go/10c0c4fabaa2baaffc61-sycamore",
+        external: true,
       },
     },
-    hidden: true,
+    hidden: false,
   },
   {
     title: "Relief Society",
@@ -237,6 +237,22 @@ export const dataImageCards: IImageCard[] = [
       text: "Learn More",
       link: {
         url: "https://www.facebook.com/groups/640925966077761",
+        external: true,
+      },
+    },
+    hidden: false,
+  },
+    {
+    title: "Elders Quorum",
+    subtitle: "Ministering as the Savior Does",
+    paragraph: "Find information about what we are doing in Elders Quorum.",
+    image: {
+      src: "/images/elders/background.jpg",
+    },
+    button: {
+      text: "Learn More",
+      link: {
+        url: "https://www.churchofjesuschrist.org/calendar/month?date=2022-7-21&lang=eng",
         external: true,
       },
     },
@@ -269,6 +285,22 @@ export const dataImageCards: IImageCard[] = [
       text: "Learn More",
       link: {
         url: "https://www.facebook.com/groups/1924770184441930",
+        external: true,
+      },
+    },
+    hidden: false,
+  },
+  {
+    title: "Primary",
+    subtitle: "Trust in the Lord",
+    paragraph: "Find information about what we are doing in our Primary.",
+    image: {
+      src: "/images/primary/background.jpg",
+    },
+    button: {
+      text: "Learn More",
+      link: {
+        url: "https://www.youtube.com/watch?v=k5Vmhyu7Dsg",
         external: true,
       },
     },
