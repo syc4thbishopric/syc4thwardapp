@@ -6,7 +6,7 @@ export type IHeroCard = {
   subtitle?: string
   paragraph?: string
   image: IImage
-  button: IButton
+  button?: IButton
   type: "light" | "dark"
 }
 

@@ -127,6 +127,7 @@ export const convertHeroCard = (heroCard: IDataCardResponse, color: "dark" | "li
   }
 }
 
+
 /**
  * RESPONSE TYPE
  */
