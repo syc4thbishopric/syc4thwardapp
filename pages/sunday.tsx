@@ -1,13 +1,27 @@
 import Head from "next/head"
 import Layout from "../components/layouts/Layout"
 import PageHeader from "../components/elements/headers/PageHeader"
-import Schedule, { ISchedule } from "../components/modules/schedules/Schedule"
-import { dataSundayScheduleTimes, dataSpecialSchedules } from "../data/dataSchedules"
+import Schedule, { ISchedule, IScheduleTime } from "../components/modules/schedules/Schedule"
+import { dataSpecialSchedules } from "../data/dataSchedules"
 import { getScheduleDate, getNextSunday, isSameOrAfterToday } from "../shared/utils/date.util"
+import { setHttpHeaders } from "../shared/utils/api.util"
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
 import Icon from "../components/elements/icons/Icon"
+import { convertSchedules, schedulesRequest } from "../shared/services/schedule.service"
+import { config } from "../config"
 
-function Sunday() {
+export const getServerSideProps = async ({ req, res }) => {
+  setHttpHeaders(res)
+  const schedules = await fetch(schedulesRequest)
+  return {
+    props: {
+      schedules: await schedules.json(),
+    },
+  }
+}
+
+function Sunday({ schedules }) {
+  const dataSundayScheduleTimes: IScheduleTime[] = convertSchedules(schedules)
   const sundaySchedule: ISchedule = {
     date: getScheduleDate(getNextSunday()),
     times: dataSundayScheduleTimes,
@@ -19,7 +33,7 @@ function Sunday() {
   return (
     <>
       <Head>
-        <title>Sycamores 4th Ward - Sunday Meetings</title>
+        <title>{config.wardName} - Sunday Meetings</title>
       </Head>
       <PageHeader title="Sunday Meetings" subtitle="Below is a list of scheduled events this upcoming Sunday" />
       <Layout>

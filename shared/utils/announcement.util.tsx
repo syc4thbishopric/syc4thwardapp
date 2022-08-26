@@ -22,6 +22,8 @@ export function filterAndSortAnnouncements(announcements: IAnnouncement[]): IAnn
         filteredAnnouncements.push(announcements[i])
         if (announcements[i].dates) delete announcements[i].dates
       }
+    } else {
+      filteredAnnouncements.push(announcements[i])
     }
   }
 
@@ -39,32 +41,6 @@ export function generateAnnouncementKey(announcement: IAnnouncement) {
     return `${announcement.title}-${subDateKeys.join("-")}`
   }
   return announcement.title
-}
-
-export async function getAnnouncements(organization: string): Promise<IAnnouncement[]> {
-    let finalAnnouncements = []
-    await axios.get(organization)
-          .then(function (response) {
-            const jsonData = csvJSON(response.data)
-              console.log(jsonData)
-              if (jsonData[0].title !== 'title') {
-                 finalAnnouncements = jsonData.map(item => {
-                    if (item.title && item.date && item.time && item.description) {
-                        const newDate = moment(item.date + item.time, 'YYYY-MM-DDLT').toDate()
-                        return {
-                            date: newDate,
-                            title: item.title,
-                            description: item.description
-                        }
-                    }
-                }).filter(item => {return item !== undefined})
-            }
-          })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })
-    return finalAnnouncements;
 }
 
 export function csvJSON(rawData, delimiter = ',') {

@@ -1,39 +1,51 @@
 import Head from "next/head"
 import Layout from "../components/layouts/Layout"
 import SectionHeader from "../components/elements/headers/SectionHeader"
-import HeroCard from "../components/modules/cards/HeroCard"
+import HeroCard, {IHeroCard} from "../components/modules/cards/HeroCard"
 import Announcement, { IAnnouncement } from "../components/modules/announcements/Announcement"
 import ContactCard, { IContactCard } from "../components/modules/cards/ContactCard"
 import MiniCard, { IMiniCard } from "../components/modules/cards/MiniCard"
 import ImageCard, { IImageCard } from "../components/modules/cards/ImageCard"
-import { dataSundayMeeting, dataAnnouncements, dataFaceCards, dataMiniCards, dataImageCards } from "../data/dataIndex"
 import {
     filterAndSortAnnouncements,
     generateAnnouncementKey,
-    csvJSON,
-    getAnnouncements
 } from "../shared/utils/announcement.util"
 import React, { useState, useEffect } from 'react'
+import {convertAnnouncements, getAllAnnouncements, getAnnouncements} from "../shared/services/announcement.service";
+import {filterById, filterByType, setHttpHeaders} from "../shared/utils/api.util";
+import {
+    convertBannerCards,
+    convertFaceCards, convertHeroCard, convertImageCards,
+    convertMiniCards,
+    dataCardsRequest
+} from "../shared/services/data-card.service";
+import BannerCard, {IBannerCard} from "../components/modules/cards/BannerCard";
+import {config} from "../config";
+
+export const getServerSideProps = async ({ req, res }) => {
+  setHttpHeaders(res)
+  const [announcements, dataCards] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest())])
+  return {
+    props: {
+      announcements: await announcements.json(),
+      dataCards: (await dataCards.json()).sort((a, b) => a.order - b.order),
+    },
+  }
+}
 
 
-
-function Home() {
-  const [eldersAnnouncements, setEldersAnnouncements] = useState<IAnnouncement[]|undefined>([])
-  const [reliefSocietyAnnouncements, setReliefSocietyAnnouncements] = useState<IAnnouncement[]|undefined>([])
-  const [youngWomenAnnouncements, setYoungWomenAnnouncements] = useState<IAnnouncement[]|undefined>([])
-  const [primaryAnnouncements, setPrimaryAnnouncements] = useState<IAnnouncement[]|undefined>([])
-  const [generalAnnouncements, setGeneralAnnouncements] = useState<IAnnouncement[]|undefined>([])
-  const [youngMenAnnouncements, setYoungMenAnnouncements] = useState<IAnnouncement[]|undefined>([])
-
-  useEffect(() => {
-      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=GeneralAnnouncements&tq=SELECT%20A,B,C,D').then(res => {setGeneralAnnouncements(res)});
-      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=YoungMen&tq=SELECT%20A,B,C,D').then(res => {setYoungMenAnnouncements(res)});
-      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=YoungWomen&tq=SELECT%20A,B,C,D').then(res => {setYoungWomenAnnouncements(res)});
-      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=Primary&tq=SELECT%20A,B,C,D').then(res => {setPrimaryAnnouncements(res)});
-      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=ReliefSociety&tq=SELECT%20A,B,C,D').then(res => {setReliefSocietyAnnouncements(res)});
-      getAnnouncements('https://docs.google.com/spreadsheets/d/1MO1uUzB1beS1dihX0BZmdspwYnqD7jt-Do87B3-Rbis/gviz/tq?tqx=out:csv&sheet=Elders&tq=SELECT%20A,B,C,D').then(res => {setEldersAnnouncements(res)});
-  }, [])
-
+function Home({announcements, dataCards}) {
+  const [eldersAnnouncements, setEldersAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "elders")))
+  const [reliefSocietyAnnouncements, setReliefSocietyAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "relief-society")))
+  const [youngWomenAnnouncements, setYoungWomenAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "young-women")))
+  const [primaryAnnouncements, setPrimaryAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "primary")))
+  const [generalAnnouncements, setGeneralAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "general")))
+  const [youngMenAnnouncements, setYoungMenAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "young-men")))
+  const dataBannerCards: IBannerCard[] = convertBannerCards(filterByType(dataCards, "banner-card"))
+  const dataFaceCards: IContactCard[] = convertFaceCards(filterByType(dataCards, "face-card"))
+  const dataMiniCards: IMiniCard[] = convertMiniCards(filterByType(dataCards, "mini-card"))
+  const dataImageCards: IImageCard[] = convertImageCards(filterByType(dataCards, "image-card"))
+  const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
   return (
     <Layout>
       <Head>
@@ -43,6 +55,15 @@ function Home() {
         <HeroCard {...dataSundayMeeting} />
       </div>
       <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
+      {dataBannerCards.length > 0 && (
+        <div className="mt-7">
+          {dataBannerCards.map((card: IBannerCard) => (
+            <div key={card.title} className="py-4 w-full">
+              <BannerCard {...card} />
+            </div>
+          ))}
+        </div>
+      )}
       {generalAnnouncements.length < 1 && youngMenAnnouncements.length < 1  && reliefSocietyAnnouncements.length < 1  &&
        eldersAnnouncements.length < 1  && youngWomenAnnouncements.length < 1  && primaryAnnouncements.length < 1  &&
         <p className="text-lg text-gray-500 mt-7 text-center">No Announcements</p>

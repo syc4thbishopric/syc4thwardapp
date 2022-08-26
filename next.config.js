@@ -6,5 +6,8 @@ module.exports = withPWA({
         register: true,
         skipWaiting: true,
         disable: process.env.NODE_ENV === "development"
-    }
+    },
+    env: {
+        LDW_KEY: process.env.LATTER_DAY_API_TOKEN,
+    },
 })
