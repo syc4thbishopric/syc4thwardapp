@@ -1,3 +1,4 @@
+import Linkify from "linkify-react"
 import { IButton } from "../../../shared/types"
 import PrimaryButton from "../../elements/buttons/PrimaryButton"
 import Icon from "../../elements/icons/Icon"
@@ -8,6 +9,22 @@ export type IBannerCard = {
   paragraph?: string
   button?: IButton
   hidden?: boolean
+}
+
+const options = {
+  attributes: null,
+  className: "text-blue-700 hover:text-blue-500",
+  defaultProtocol: "http",
+  events: null,
+  format: (value, type) => value,
+  formatHref: (href, type) => href,
+  ignoreTags: [],
+  nl2br: false,
+  rel: null,
+  tagName: "a",
+  target: "_blank",
+  truncate: 0,
+  validate: true,
 }
 
 const BannerCard = ({ ...card }: IBannerCard) => {
@@ -30,7 +47,7 @@ const BannerCard = ({ ...card }: IBannerCard) => {
           </div>
           )}
         </div>
-        <div className="bg-white border border-gray-200 mt-3 text-base p-5 rounded-xl">{card.paragraph && <p>{card.paragraph}</p>}</div>
+        <Linkify tagName="p" options={options} className="bg-white border border-gray-200 mt-3 text-base p-5 rounded-xl">{card.paragraph && <p>{card.paragraph}</p>}</Linkify>
       </div>
     </div>
   )
