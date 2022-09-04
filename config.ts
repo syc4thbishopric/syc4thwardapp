@@ -1,5 +1,5 @@
 export const config = {
-  wardName: "Sycamores 4th WArd",
+  wardName: "Sycamores 4th Ward",
   apiUrl: "https://api.latterdayward.com/api",
   apiWard: "sycamores4th",
   apiHeaders: {
