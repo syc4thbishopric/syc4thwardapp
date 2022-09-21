@@ -7,12 +7,14 @@ import ContactCard, { IContactCard } from "../components/modules/cards/ContactCa
 import MiniCard, { IMiniCard } from "../components/modules/cards/MiniCard"
 import ImageCard, { IImageCard } from "../components/modules/cards/ImageCard"
 import {
+    announcementConcatenator,
     filterAndSortAnnouncements,
     generateAnnouncementKey,
 } from "../shared/utils/announcement.util"
 import React, { useState, useEffect } from 'react'
 import {convertAnnouncements, getAllAnnouncements, getAnnouncements} from "../shared/services/announcement.service";
 import {filterById, filterByType, setHttpHeaders} from "../shared/utils/api.util";
+import {useWindowSize} from '../shared/utils/general.util'
 import {
     convertBannerCards,
     convertFaceCards, convertHeroCard, convertImageCards,
@@ -33,7 +35,6 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 }
 
-
 function Home({announcements, dataCards}) {
   const [eldersAnnouncements, setEldersAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "elders")))
   const [reliefSocietyAnnouncements, setReliefSocietyAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "relief-society")))
@@ -46,6 +47,47 @@ function Home({announcements, dataCards}) {
   const dataMiniCards: IMiniCard[] = convertMiniCards(filterByType(dataCards, "mini-card"))
   const dataImageCards: IImageCard[] = convertImageCards(filterByType(dataCards, "image-card"))
   const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
+  const size = useWindowSize();
+
+  const announcementsToText = () => {
+      let textExport = 'Sycamores 4th Ward\n\n';
+      if(generalAnnouncements.length > 0 || dataBannerCards.length > 0) {
+          textExport = textExport.concat('General\n\n')
+      }
+      dataBannerCards.forEach(item => {
+          const itemToConcat = `${item.title}\n${item.subtitle}\n${item.paragraph.replace(/(\r\n|\n|\r)/gm, "")}\n\n`;
+          textExport = textExport.concat(itemToConcat);
+      });
+      textExport = textExport.concat(announcementConcatenator(generalAnnouncements))
+
+      if(reliefSocietyAnnouncements.length > 0) {
+          textExport = textExport.concat('Relief Society\n\n')
+      }
+      textExport = textExport.concat(announcementConcatenator(reliefSocietyAnnouncements))
+
+      if(eldersAnnouncements.length > 0) {
+          textExport = textExport.concat('Elders Quorum\n\n')
+      }
+      textExport = textExport.concat(announcementConcatenator(eldersAnnouncements))
+
+      if(youngWomenAnnouncements.length > 0) {
+          textExport = textExport.concat('Young Women\n\n')
+      }
+      textExport = textExport.concat(announcementConcatenator(youngWomenAnnouncements))
+
+      if(youngMenAnnouncements.length > 0) {
+          textExport = textExport.concat('Young Men\n\n')
+      }
+      textExport = textExport.concat(announcementConcatenator(youngMenAnnouncements))
+
+      if(primaryAnnouncements.length > 0) {
+          textExport = textExport.concat('Primary\n\n')
+      }
+      textExport = textExport.concat(announcementConcatenator(primaryAnnouncements))
+
+      console.log(textExport)
+  }
+
   return (
     <Layout>
       <Head>
@@ -54,7 +96,17 @@ function Home({announcements, dataCards}) {
       <div className="pt-16">
         <HeroCard {...dataSundayMeeting} />
       </div>
-      <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
+      <div className="relative">
+          <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
+          {size.width > 1050 && (
+              <button
+                    className="absolute bottom-0 right-0 text-gray-600 hover:bg-gray-50 text-sm px-6 py-1 lg:py-2 w-45 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                    onClick={announcementsToText}
+              >
+                  Announcements Text
+              </button>
+          )}
+      </div>
       {dataBannerCards.length > 0 && (
         <div className="mt-7">
           {dataBannerCards.map((card: IBannerCard) => (
@@ -207,3 +259,5 @@ function Home({announcements, dataCards}) {
 }
 
 export default Home
+
+

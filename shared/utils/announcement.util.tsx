@@ -57,3 +57,19 @@ export function csvJSON(rawData, delimiter = ',') {
       );
     });
 }
+
+export function announcementConcatenator(announcementArray): string {
+  let totalText = '';
+  announcementArray.forEach(item => {
+    let itemToConcat
+    if (!item.date || item.date > new Date()) {
+      if (item.date) {
+        itemToConcat = `${item.title}\n${moment(item.date).format('ddd, MMM Mo h:mm A')}\n${item.description.replace(/(\r\n|\n|\r)/gm, "")}\n\n`;
+      } else {
+        itemToConcat = `${item.title}\n${item.description.replace(/(\r\n|\n|\r)/gm, "")}\n\n`;
+      }
+      totalText = totalText.concat(itemToConcat);
+    }
+  })
+  return totalText;
+}
