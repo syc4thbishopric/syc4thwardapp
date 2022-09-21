@@ -85,7 +85,7 @@ function Home({announcements, dataCards}) {
       }
       textExport = textExport.concat(announcementConcatenator(primaryAnnouncements))
 
-      console.log(textExport)
+      alert(textExport)
   }
 
   return (
