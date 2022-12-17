@@ -46,6 +46,7 @@ function Home({announcements, dataCards}) {
   const dataFaceCards: IContactCard[] = convertFaceCards(filterByType(dataCards, "face-card"))
   const dataMiniCards: IMiniCard[] = convertMiniCards(filterByType(dataCards, "mini-card"))
   const dataImageCards: IImageCard[] = convertImageCards(filterByType(dataCards, "image-card"))
+  const dataMissionaryCards: IImageCard[] = convertImageCards(filterByType(dataCards, "missionary-card"))
   const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
   const size = useWindowSize();
 
@@ -239,6 +240,20 @@ function Home({announcements, dataCards}) {
               </div>
             ))}
         </div>
+      )}
+      {dataMissionaryCards.filter((card) => !card.hidden).length > 0 && (
+        <>
+          <SectionHeader title="Missionaries Serving" subtitle="Take some time to write our missionaries." />
+          <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 pt-5">
+            {dataMissionaryCards
+              .filter((card) => !card.hidden)
+              .map((card: IImageCard) => (
+                <div key={card.title} className="py-3 w-full">
+                  <ImageCard {...card} />
+                </div>
+              ))}
+          </div>
+        </>
       )}
       {dataImageCards.filter((card) => !card.hidden).length > 0 && (
         <>
