@@ -3,6 +3,7 @@ import Layout from "../components/layouts/Layout"
 import PageHeader from "../components/elements/headers/PageHeader"
 import Schedule, { ISchedule, IScheduleTime } from "../components/modules/schedules/Schedule"
 import { dataSpecialSchedules } from "../data/dataSchedules"
+import { dataSacramentProgram } from '../data/dataSacramentProgram'
 import { getScheduleDate, getNextSunday, isSameOrAfterToday } from "../shared/utils/date.util"
 import { setHttpHeaders } from "../shared/utils/api.util"
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
@@ -25,6 +26,7 @@ function Sunday({ schedules }) {
   const sundaySchedule: ISchedule = {
     date: getScheduleDate(getNextSunday()),
     times: dataSundayScheduleTimes,
+    program: dataSacramentProgram
   }
   const schedule = dataSpecialSchedules
     .filter((e) => isSameOrAfterToday(e.date.date))

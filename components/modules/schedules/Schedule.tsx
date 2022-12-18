@@ -2,11 +2,14 @@ import ImageCard from "../cards/ImageCard"
 import MiniCard from "../cards/MiniCard"
 import Divider from "../../elements/dividers/Divider"
 import SectionHeader from "../../elements/headers/SectionHeader"
+import SacramentProgram from "../../modules/sacrament-program/sacrament-program"
 import { IColor, IImage, IButton } from "../../../shared/types"
+import { IProgram } from "../sacrament-program/sacrament-program"
 
 export type ISchedule = {
   date: IScheduleDate
   times: IScheduleTime[]
+  program: IProgram
 }
 
 export type IScheduleDate = {
@@ -37,7 +40,7 @@ const getColorStyle = {
   green: "bg-green-100 text-green-800",
 }
 
-const Schedule = ({ date, times }: ISchedule) => {
+const Schedule = ({ date, times, program }: ISchedule) => {
   return (
     <>
       <SectionHeader title={date.dateFormatted} />
@@ -51,15 +54,29 @@ const Schedule = ({ date, times }: ISchedule) => {
                 .filter((event) => (event.repeats ? event.repeats.includes(date.weekOfTheMonth) : event))
                 .map((event) =>
                   event.image ? (
-                    <div key={event.title} className="py-3 w-full">
-                      <ImageCard
-                        title={event.title}
-                        subtitle={event.subtitle}
-                        paragraph={event.description}
-                        image={event.image}
-                        button={event.button ? { ...event.button, color: time.color } : null}
-                      />
-                    </div>
+                    <>
+                      <div key={event.title} className="py-3 w-full">
+                        <ImageCard
+                          title={event.title}
+                          subtitle={event.subtitle}
+                          paragraph={event.description}
+                          image={event.image}
+                          button={event.button ? { ...event.button, color: time.color } : null}
+                        />
+                      </div>
+                      <div className="py-3 w-full">
+                        <SacramentProgram 
+                          presiding={program.presiding}
+                          conducting={program.conducting}
+                          openingHymn={program.openingHymn}
+                          closingHymn={program.closingHymn}
+                          sacramentHymn={program.sacramentHymn}
+                          openingPrayer={program.openingPrayer}
+                          closingPrayer={program.closingPrayer}
+                          programContents={program.programContents}
+                        />
+                      </div>
+                    </>
                   ) : (
                     <div key={event.title} className="py-3 w-full">
                       <MiniCard
