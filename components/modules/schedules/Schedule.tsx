@@ -9,7 +9,6 @@ import { IProgram } from "../sacrament-program/sacrament-program"
 export type ISchedule = {
   date: IScheduleDate
   times: IScheduleTime[]
-  program: IProgram
 }
 
 export type IScheduleDate = {
@@ -40,7 +39,7 @@ const getColorStyle = {
   green: "bg-green-100 text-green-800",
 }
 
-const Schedule = ({ date, times, program }: ISchedule) => {
+const Schedule = ({ date, times }: ISchedule) => {
   return (
     <>
       <SectionHeader title={date.dateFormatted} />
@@ -62,18 +61,6 @@ const Schedule = ({ date, times, program }: ISchedule) => {
                           paragraph={event.description}
                           image={event.image}
                           button={event.button ? { ...event.button, color: time.color } : null}
-                        />
-                      </div>
-                      <div className="py-3 w-full">
-                        <SacramentProgram 
-                          presiding={program.presiding}
-                          conducting={program.conducting}
-                          openingHymn={program.openingHymn}
-                          closingHymn={program.closingHymn}
-                          sacramentHymn={program.sacramentHymn}
-                          openingPrayer={program.openingPrayer}
-                          closingPrayer={program.closingPrayer}
-                          programContents={program.programContents}
                         />
                       </div>
                     </>

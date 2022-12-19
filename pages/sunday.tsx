@@ -25,8 +25,7 @@ function Sunday({ schedules }) {
   const dataSundayScheduleTimes: IScheduleTime[] = convertSchedules(schedules)
   const sundaySchedule: ISchedule = {
     date: getScheduleDate(getNextSunday()),
-    times: dataSundayScheduleTimes,
-    program: dataSacramentProgram
+    times: dataSundayScheduleTimes
   }
   const schedule = dataSpecialSchedules
     .filter((e) => isSameOrAfterToday(e.date.date))

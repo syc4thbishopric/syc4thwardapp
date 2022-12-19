@@ -1,6 +1,7 @@
 import ProgramItem, { IProgramItem } from "./program-item"
 
 export type IProgram = {
+  date: string
   presiding: IProgramItem
   conducting: IProgramItem
   openingHymn: IProgramItem
@@ -27,7 +28,7 @@ const SacramentProgram = ({...program}: IProgram) => {
         <ProgramItem title="Administration of the Sacrament" color="red"/>
         {program.programContents
           .map((item) => 
-            <ProgramItem {...item}/>
+            <ProgramItem key={item.title.concat(item.name)} {...item}/>
           )
         }
         <ProgramItem {...program.closingHymn}/>
