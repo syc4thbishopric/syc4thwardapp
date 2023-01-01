@@ -1,7 +1,7 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, December 18th, 2022",
+  date: "Sunday, January 1st, 2023",
   presiding: {
     title: "Presiding",
     name: "Bishop Brian Shepherd",
@@ -14,45 +14,45 @@ export const dataSacramentProgram: IProgram = {
   },
   openingHymn: {
     title: "Opening Hymn",
-    name: "#209 Hark! The Herald Angels Sing",
+    name: "#277 As I Search The Holy Scriptures",
     color: "green"
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#181 Jesus of Nazareth, Savior and King",
+    name: "#190 In Memory of the Crucified",
     color: "green"
   },
   closingHymn: {
     title: "Closing Hymn",
-    name: "#203 Angels We Have Heard on High",
+    name: "#85 How Firm a Foundation",
     color: "green"
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Eden Carlson",
+    name: "Sister Holly Moore",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Sister Avery Earl",
+    name: "Brother Scott Moore",
     color: "yellow"
   },
   programContents: [
     {
       title: "Speaker",
-      name: "Sister Raina Bassett",
+      name: "Sister Julie Bugger",
       color: "yellow",
       order: 0
     },
     {
-      title: "Musical Number",
-      name: "Still, Still, Still (Rachelle Brady)",
+      title: "Intermediate Hymn",
+      name: "#304 Teach Me To Walk in the Light",
       color: "green",
       order: 1
     },
     {
       title: "Speaker",
-      name: "President David Bassett",
+      name: "Brother Kerry Bugger",
       color: "yellow",
       order: 2
     },
