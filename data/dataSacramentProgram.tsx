@@ -1,7 +1,7 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, January 1st, 2023",
+  date: "Sunday, January 8th, 2023",
   presiding: {
     title: "Presiding",
     name: "Bishop Brian Shepherd",
@@ -9,52 +9,52 @@ export const dataSacramentProgram: IProgram = {
   },
   conducting: {
     title: "Conducting",
-    name: "Bishop Brian Shepherd",
+    name: "Brother Corwin Higley",
     color: "red"
   },
   openingHymn: {
     title: "Opening Hymn",
-    name: "#277 As I Search The Holy Scriptures",
+    name: "#52 The Day Dawn is Breaking",
     color: "green"
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#190 In Memory of the Crucified",
+    name: "#176 'Tis Sweet to Sing the Matchless Love",
     color: "green"
   },
   closingHymn: {
     title: "Closing Hymn",
-    name: "#85 How Firm a Foundation",
+    name: "#300 Families Can be Together Forever",
     color: "green"
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Holly Moore",
+    name: "Sister Heather Moffat",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Scott Moore",
+    name: "Brother Rich Moffat",
     color: "yellow"
   },
   programContents: [
     {
-      title: "Speaker",
-      name: "Sister Julie Bugger",
+      title: "Bearing of Testmonies",
+      name: "Congregation",
       color: "yellow",
       order: 0
     },
-    {
-      title: "Intermediate Hymn",
-      name: "#304 Teach Me To Walk in the Light",
-      color: "green",
-      order: 1
-    },
-    {
-      title: "Speaker",
-      name: "Brother Kerry Bugger",
-      color: "yellow",
-      order: 2
-    },
+    // {
+    //   title: "Intermediate Hymn",
+    //   name: "#304 Teach Me To Walk in the Light",
+    //   color: "green",
+    //   order: 1
+    // },
+    // {
+    //   title: "Speaker",
+    //   name: "Brother Kerry Bugger",
+    //   color: "yellow",
+    //   order: 2
+    // },
   ]
 }
