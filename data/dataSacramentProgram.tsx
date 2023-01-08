@@ -29,7 +29,7 @@ export const dataSacramentProgram: IProgram = {
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Heather Moffat",
+    name: "Brother Kyle Cornwall",
     color: "yellow"
   },
   closingPrayer:  {
