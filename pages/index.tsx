@@ -50,6 +50,8 @@ function Home({announcements, dataCards}) {
   const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
   const size = useWindowSize();
 
+  dataMissionaryCards.forEach(card => card.scale = true);
+
   const announcementsToText = () => {
       let textExport = 'Sycamores 4th Ward\n\n';
       if(generalAnnouncements.length > 0 || dataBannerCards.length > 0) {
