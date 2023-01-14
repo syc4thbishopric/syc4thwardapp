@@ -1,7 +1,7 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, January 8th, 2023",
+  date: "Sunday, January 15th, 2023",
   presiding: {
     title: "Presiding",
     name: "Bishop Brian Shepherd",
@@ -14,47 +14,47 @@ export const dataSacramentProgram: IProgram = {
   },
   openingHymn: {
     title: "Opening Hymn",
-    name: "#52 The Day Dawn is Breaking",
+    name: "#142 Sweet Hour Of Prayer",
     color: "green"
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#176 'Tis Sweet to Sing the Matchless Love",
+    name: "#174 While of These Emblems We Partake",
     color: "green"
   },
   closingHymn: {
     title: "Closing Hymn",
-    name: "#300 Families Can be Together Forever",
+    name: "#143 Let the Holy Spirit Guide",
     color: "green"
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Brother Kyle Cornwall",
+    name: "Sister Juli Oakeson",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Rich Moffat",
+    name: "Brother Josh Oakeson",
     color: "yellow"
   },
   programContents: [
     {
-      title: "Bearing of Testmonies",
-      name: "Congregation",
+      title: "Speaker",
+      name: "Sister Brianne Cole",
       color: "yellow",
       order: 0
     },
-    // {
-    //   title: "Intermediate Hymn",
-    //   name: "#304 Teach Me To Walk in the Light",
-    //   color: "green",
-    //   order: 1
-    // },
-    // {
-    //   title: "Speaker",
-    //   name: "Brother Kerry Bugger",
-    //   color: "yellow",
-    //   order: 2
-    // },
+    {
+      title: "Intermediate Hymn",
+      name: "#108 The Lord is My Shepherd",
+      color: "green",
+      order: 1
+    },
+    {
+      title: "Speaker",
+      name: "Sister Julie Reed",
+      color: "yellow",
+      order: 2
+    },
   ]
 }
