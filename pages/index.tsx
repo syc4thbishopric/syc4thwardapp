@@ -13,6 +13,7 @@ import {
 } from "../shared/utils/announcement.util"
 import React, { useState, useEffect } from 'react'
 import {convertAnnouncements, getAllAnnouncements, getAnnouncements} from "../shared/services/announcement.service";
+import { getSacramentMusic } from "../shared/services/sacrament-program.service"
 import {filterById, filterByType, setHttpHeaders} from "../shared/utils/api.util";
 import {useWindowSize} from '../shared/utils/general.util'
 import {
@@ -27,6 +28,8 @@ import {config} from "../config";
 export const getServerSideProps = async ({ req, res }) => {
   setHttpHeaders(res)
   const [announcements, dataCards] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest())])
+  const program = await getSacramentMusic(new Date(2023, 0, 22))
+  console.log(program)
   return {
     props: {
       announcements: await announcements.json(),
