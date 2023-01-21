@@ -1,7 +1,7 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, January 15th, 2023",
+  date: "Sunday, January 22nd, 2023",
   presiding: {
     title: "Presiding",
     name: "Bishop Brian Shepherd",
@@ -14,45 +14,51 @@ export const dataSacramentProgram: IProgram = {
   },
   openingHymn: {
     title: "Opening Hymn",
-    name: "#142 Sweet Hour Of Prayer",
+    name: "#305 The Light Divine",
     color: "green"
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#174 While of These Emblems We Partake",
+    name: "#182 We'll Sing All HAil to Jesus' Name",
     color: "green"
   },
   closingHymn: {
     title: "Closing Hymn",
-    name: "#143 Let the Holy Spirit Guide",
+    name: "#241 Count Your Blessings",
     color: "green"
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Juli Oakeson",
+    name: "Sister Hallie Oakeson",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Josh Oakeson",
+    name: "Brother Jacob Breck",
     color: "yellow"
   },
   programContents: [
     {
+      title: "Youth Speaker",
+      name: "Sister Isabel Gilchrist",
+      color: "yellow",
+      order: 0
+    },
+    {
       title: "Speaker",
-      name: "Sister Brianne Cole",
+      name: "Brother Brett Murri",
       color: "yellow",
       order: 0
     },
     {
       title: "Intermediate Hymn",
-      name: "#108 The Lord is My Shepherd",
+      name: "#6 Redeemer of Israel",
       color: "green",
       order: 1
     },
     {
       title: "Speaker",
-      name: "Sister Julie Reed",
+      name: "Brother Craig Brown",
       color: "yellow",
       order: 2
     },
