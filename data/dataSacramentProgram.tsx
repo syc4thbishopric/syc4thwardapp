@@ -19,7 +19,7 @@ export const dataSacramentProgram: IProgram = {
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#182 We'll Sing All HAil to Jesus' Name",
+    name: "#182 We'll Sing All Hail to Jesus' Name",
     color: "green"
   },
   closingHymn: {
