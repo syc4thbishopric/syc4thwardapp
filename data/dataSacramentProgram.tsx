@@ -29,12 +29,12 @@ export const dataSacramentProgram: IProgram = {
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "TBD",
+    name: "Sister Leslie Pearson",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "TBD",
+    name: "Brother Joe Pearson",
     color: "yellow"
   },
   programContents: [
