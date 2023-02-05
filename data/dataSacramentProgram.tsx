@@ -34,7 +34,7 @@ export const dataSacramentProgram: IProgram = {
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Joe Pearson",
+    name: "TBD",
     color: "yellow"
   },
   programContents: [
