@@ -34,7 +34,7 @@ export const dataSacramentProgram: IProgram = {
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "TBD",
+    name: "Sister Amie Crawford",
     color: "yellow"
   },
   programContents: [
