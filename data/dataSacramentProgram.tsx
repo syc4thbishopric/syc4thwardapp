@@ -1,7 +1,7 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, February 5th, 2023",
+  date: "Sunday, February 12th, 2023",
   presiding: {
     title: "Presiding",
     name: "Bishop Brian Shepherd",
@@ -14,53 +14,53 @@ export const dataSacramentProgram: IProgram = {
   },
   openingHymn: {
     title: "Opening Hymn",
-    name: "#134 I Believe in Christ",
+    name: "#302 I Know My Father Lives",
     color: "green"
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#172 In Humility, Our Savior",
+    name: "#183 In Rememberance of Thy Suffering",
     color: "green"
   },
   closingHymn: {
     title: "Closing Hymn",
-    name: "#116 Come Follow Me",
+    name: "#219 Because I Have Been Given Much",
     color: "green"
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Leslie Pearson",
+    name: "Sister Deneece Park",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Sister Amie Crawford",
+    name: "Brother Dennis Park",
     color: "yellow"
   },
   programContents: [
     {
-      title: "Fast Sunday",
-      name: "Bearing of Testimonies",
+      title: "Speaker",
+      name: "Sister Hallie Oakeson",
       color: "yellow",
       order: 0
     },
-    // {
-    //   title: "Speaker",
-    //   name: "Brother Brett Murri",
-    //   color: "yellow",
-    //   order: 0
-    // },
+    {
+      title: "Speaker",
+      name: "Sister Missionary",
+      color: "yellow",
+      order: 0
+    },
     // {
     //   title: "Intermediate Hymn",
     //   name: "#6 Redeemer of Israel",
     //   color: "green",
     //   order: 1
     // },
-    // {
-    //   title: "Speaker",
-    //   name: "Brother Craig Brown",
-    //   color: "yellow",
-    //   order: 2
-    // },
+    {
+      title: "Speaker",
+      name: "Sister Missionary",
+      color: "yellow",
+      order: 2
+    },
   ]
 }
