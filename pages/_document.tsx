@@ -32,10 +32,21 @@ class MyDocument extends Document {
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
           <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+          <script dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-5H82LRV');`
+          }} />
         </Head>
         <body>
           <Main />
           <NextScript />
+          <noscript dangerouslySetInnerHTML={{
+            __html: `><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5H82LRV"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>`
+          }} />
         </body>
       </Html>
     )
