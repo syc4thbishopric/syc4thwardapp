@@ -46,7 +46,7 @@ export const dataSacramentProgram: IProgram = {
     },
     {
       title: "Speaker",
-      name: "Sister Missionary",
+      name: "Sister Earnest",
       color: "yellow",
       order: 0
     },
@@ -58,7 +58,7 @@ export const dataSacramentProgram: IProgram = {
     // },
     {
       title: "Speaker",
-      name: "Sister Missionary",
+      name: "Sister Holman",
       color: "yellow",
       order: 2
     },
