@@ -2,9 +2,7 @@ import ImageCard from "../cards/ImageCard"
 import MiniCard from "../cards/MiniCard"
 import Divider from "../../elements/dividers/Divider"
 import SectionHeader from "../../elements/headers/SectionHeader"
-import SacramentProgram from "../../modules/sacrament-program/sacrament-program"
 import { IColor, IImage, IButton } from "../../../shared/types"
-import { IProgram } from "../sacrament-program/sacrament-program"
 
 export type ISchedule = {
   date: IScheduleDate
