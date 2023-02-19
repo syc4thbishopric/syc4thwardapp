@@ -40,7 +40,7 @@ export const dataSacramentProgram: IProgram = {
   programContents: [
     {
       title: "Speaker",
-      name: "High Council Speaker",
+      name: "Brother Richard Brough",
       color: "yellow",
       order: 0
     },
@@ -52,7 +52,7 @@ export const dataSacramentProgram: IProgram = {
     },
     {
       title: "Speaker",
-      name: "High Council Speaker",
+      name: "Brother Rocky Christensen",
       color: "yellow",
       order: 2
     },
