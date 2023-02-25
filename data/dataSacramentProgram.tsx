@@ -1,7 +1,7 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, February 19th, 2023",
+  date: "Sunday, February 26th, 2023",
   presiding: {
     title: "Presiding",
     name: "Bishop Brian Shepherd",
@@ -14,47 +14,53 @@ export const dataSacramentProgram: IProgram = {
   },
   openingHymn: {
     title: "Opening Hymn",
-    name: "#220 Lord, I Would Follow Thee",
+    name: "#239 Choose The Right",
     color: "green"
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#187 God Loved Us, So He Sent His Son",
+    name: "#193 I Stand All Amazed",
     color: "green"
   },
   closingHymn: {
     title: "Closing Hymn",
-    name: "#89 The Lord Is My Light",
+    name: "#223 Have I Done Any Good?",
     color: "green"
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Krista Riley",
+    name: "Sister Kathy Shipley",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Dave Riley",
+    name: "Brother Mike Shipley",
     color: "yellow"
   },
   programContents: [
     {
       title: "Speaker",
-      name: "Brother Richard Brough",
+      name: "Sister Eden Carlson",
       color: "yellow",
       order: 0
     },
     {
-      title: "Intermediate Hymn",
-      name: "#308 Love One Another",
-      color: "green",
+      title: "Speaker",
+      name: "Brother Mike Burr",
+      color: "yellow",
       order: 1
     },
     {
-      title: "Speaker",
-      name: "Brother Rocky Christensen",
-      color: "yellow",
+      title: "Musical Number",
+      name: "Jodi Cornwall Acc Leslie Pearson, \"Where Can I Turn for Peace?\"",
+      color: "green",
       order: 2
+    },
+    {
+      title: "Speaker",
+      name: "Brother Dan Tolbert",
+      color: "yellow",
+      order: 3
     },
   ]
 }
