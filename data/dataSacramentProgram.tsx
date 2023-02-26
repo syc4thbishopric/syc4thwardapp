@@ -29,12 +29,12 @@ export const dataSacramentProgram: IProgram = {
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Kathy Shipley",
+    name: "Brother Mike Shipley",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Mike Shipley",
+    name: "Sister Tiana Shepherd",
     color: "yellow"
   },
   programContents: [
