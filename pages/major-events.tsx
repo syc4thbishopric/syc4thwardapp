@@ -42,7 +42,7 @@ function MajorEvents({announcements}) {
         {majorEvents.length > 0 &&
           <>
             <p className="text-lg text-gray-500 mt-5 text-center">Events</p>
-            <div className="mt-7">
+            <div className="mt-5">
               <div className="relative max-w-xl mx-auto lg:max-w-7xl">
                 <div className="grid gap-4 lg:grid-cols-2">
                   {filterAndSortAnnouncements(majorEvents).map((announcement: IAnnouncement) => (
