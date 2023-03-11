@@ -1,10 +1,10 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, March 5th, 2023",
+  date: "Sunday, March 12th, 2023",
   presiding: {
     title: "Presiding",
-    name: "Bishop Brian Shepherd",
+    name: "President David Bassett",
     color: "red"
   },
   conducting: {
@@ -14,53 +14,47 @@ export const dataSacramentProgram: IProgram = {
   },
   openingHymn: {
     title: "Opening Hymn",
-    name: "#137 Testimony",
+    name: "#263 Go Forth With Faith",
     color: "green"
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#173 While Of These Emblems We Partake",
+    name: "#177 Tis Sweet to Sing the Matchless Love",
     color: "green"
   },
   closingHymn: {
     title: "Closing Hymn",
-    name: "#105 Master The Tempest Is Raging",
+    name: "#124 Be Still My Soul",
     color: "green"
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Allison Stringam",
+    name: "Sister Shelina Swenson",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Zac Stringam",
+    name: "Brother Kyle Swenson",
     color: "yellow"
   },
   programContents: [
     {
-      title: "Fast Sunday",
-      name: "Bearing of Testimonies",
+      title: "Speaker",
+      name: "Bishop Brian Shepherd",
       color: "yellow",
       order: 0
     },
-    // {
-    //   title: "Speaker",
-    //   name: "Brother Mike Burr",
-    //   color: "yellow",
-    //   order: 1
-    // },
-    // {
-    //   title: "Musical Number",
-    //   name: "Jodi Cornwall Acc Leslie Pearson, \"Where Can I Turn for Peace?\"",
-    //   color: "green",
-    //   order: 2
-    // },
-    // {
-    //   title: "Speaker",
-    //   name: "Brother Dan Tolbert",
-    //   color: "yellow",
-    //   order: 3
-    // },
+    {
+      title: "Musical Number",
+      name: "Duet: Nate Green & Christie Hardey, Acc Nate Hardey \"When He Comes Again\"",
+      color: "green",
+      order: 1
+    },
+    {
+      title: "Speaker",
+      name: "President David Bassett",
+      color: "yellow",
+      order: 2
+    },
   ]
 }
