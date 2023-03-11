@@ -29,7 +29,6 @@ export const getServerSideProps = async ({ req, res }) => {
   setHttpHeaders(res)
   const [announcements, dataCards] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest())])
   const program = await getSacramentMusic(new Date(2023, 0, 22))
-  console.log(program)
   return {
     props: {
       announcements: await announcements.json(),

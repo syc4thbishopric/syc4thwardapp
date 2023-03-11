@@ -31,30 +31,30 @@ function Sacrament({dataCards, program}) {
     <>
       <PageHeader title="Sacrament Meeting" subtitle="Please see below for the program for today" />
       <Layout>
-      <PrimaryButton type="link" className="absolute top-2 md:top-5" link={{ url: "/sunday" }}>
-        <Icon name="chevron-left" className="h-5 w-5" />
-        <span className="mr-2 text-sm uppercase font-semibold">Back to Sunday Schedule</span>
-      </PrimaryButton>
-      <SectionHeader title={sundayDate.dateFormatted} />
-      <Divider className="mt-8 md:mt-12 lg:mt-14" />
-      {sundayDate.dateFormatted == program.date ?
-       <div className="py-3 w-full">
-          <SacramentProgram
-            date={program.date} 
-            presiding={program.presiding}
-            conducting={program.conducting}
-            openingHymn={program.openingHymn}
-            closingHymn={program.closingHymn}
-            sacramentHymn={program.sacramentHymn}
-            openingPrayer={program.openingPrayer}
-            closingPrayer={program.closingPrayer}
-            programContents={program.programContents}
-          />
-        </div> : <SectionHeader title={`Program is forthcoming. Please check later`} />}
-      <PrimaryButton type="link" className="mt-20" link={{ url: "/sunday" }}>
-        <Icon name="chevron-left" className="h-5 w-5" />
-        <span className="mr-2 text-sm uppercase font-semibold">Back to Sunday Schedule</span>
-      </PrimaryButton>
+        <PrimaryButton type="link" className="absolute top-2 md:top-5" link={{ url: "/sunday" }}>
+          <Icon name="chevron-left" className="h-5 w-5" />
+          <span className="mr-2 text-sm uppercase font-semibold">Back to Sunday Schedule</span>
+        </PrimaryButton>
+        <SectionHeader title={sundayDate.dateFormatted} />
+        <Divider className="mt-8 md:mt-12 lg:mt-14" />
+        {sundayDate.dateFormatted == program.date ?
+        <div className="py-3 w-full">
+            <SacramentProgram
+              date={program.date} 
+              presiding={program.presiding}
+              conducting={program.conducting}
+              openingHymn={program.openingHymn}
+              closingHymn={program.closingHymn}
+              sacramentHymn={program.sacramentHymn}
+              openingPrayer={program.openingPrayer}
+              closingPrayer={program.closingPrayer}
+              programContents={program.programContents}
+            />
+          </div> : <SectionHeader title={`Program is forthcoming. Please check later`} />}
+        <PrimaryButton type="link" className="mt-20" link={{ url: "/sunday" }}>
+          <Icon name="chevron-left" className="h-5 w-5" />
+          <span className="mr-2 text-sm uppercase font-semibold">Back to Sunday Schedule</span>
+        </PrimaryButton>
       </Layout>
     </>
   )
