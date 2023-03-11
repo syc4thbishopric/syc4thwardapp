@@ -27,7 +27,7 @@ export const getServerSideProps = async ({ req, res }) => {
 
 function Sunday({ schedules, roll }) {
   const dataRollCards: IImageCard[] = convertImageCards(filterByType(roll, "roll-card"))
-  const dataSundayScheduleTimes: IScheduleTime[] = convertSchedules(schedules)
+  const dataSundayScheduleTimes: IScheduleTime[] = convertSchedules(schedules.filter(schedule => schedule.events))
   const sundaySchedule: ISchedule = {
     date: getScheduleDate(getNextSunday()),
     times: dataSundayScheduleTimes
