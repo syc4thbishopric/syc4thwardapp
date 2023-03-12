@@ -33,7 +33,7 @@ function MajorEvents({announcements}) {
 
   return (
     <>
-      <PageHeader title="Major Events" subtitle="Below dates to be aware of and upcoming events this year" />
+      <PageHeader title="Major Events" subtitle="Below are some dates to be aware of for upcoming events this year" />
       <Layout>
         <PrimaryButton type="link" className="mt-5" link={{ url: "/" }}>
           <Icon name="chevron-left" className="h-5 w-5" />
