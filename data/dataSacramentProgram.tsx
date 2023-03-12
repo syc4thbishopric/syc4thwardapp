@@ -29,12 +29,12 @@ export const dataSacramentProgram: IProgram = {
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Shelina Swenson",
+    name: "Sister Morgan Wiersdorf",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Kyle Swenson",
+    name: "Brother Caden Millett",
     color: "yellow"
   },
   programContents: [
@@ -46,7 +46,7 @@ export const dataSacramentProgram: IProgram = {
     },
     {
       title: "Musical Number",
-      name: "Duet: Nate Green & Christie Hardey, Acc Nate Hardey \"When He Comes Again\"",
+      name: "Rachelle Brady \"My Heavenly Father Loves Me\"",
       color: "green",
       order: 1
     },
