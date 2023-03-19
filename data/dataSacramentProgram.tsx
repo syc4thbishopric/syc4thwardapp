@@ -34,7 +34,7 @@ export const dataSacramentProgram: IProgram = {
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Brother Caden Millett",
+    name: "Sister Shelina Swenson",
     color: "yellow"
   },
   programContents: [
@@ -52,7 +52,7 @@ export const dataSacramentProgram: IProgram = {
     },
     {
       title: "Speaker",
-      name: "Sister Shelina Swenson",
+      name: "Brother Craig Brown",
       color: "yellow",
       order: 2
     },
