@@ -1,10 +1,10 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, March 12th, 2023",
+  date: "Sunday, March 19th, 2023",
   presiding: {
     title: "Presiding",
-    name: "President David Bassett",
+    name: "Bishop Brian Shepherd",
     color: "red"
   },
   conducting: {
@@ -14,22 +14,22 @@ export const dataSacramentProgram: IProgram = {
   },
   openingHymn: {
     title: "Opening Hymn",
-    name: "#263 Go Forth With Faith",
+    name: "#140 Did You Think To Pray",
     color: "green"
   },
   sacramentHymn: {
     title: "Sacrament Hymn",
-    name: "#177 Tis Sweet to Sing the Matchless Love",
+    name: "#194 There Is A Green Hill Far Away",
     color: "green"
   },
   closingHymn: {
     title: "Closing Hymn",
-    name: "#124 Be Still My Soul",
+    name: "#125 How Gentle God's Commands",
     color: "green"
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Sister Morgan Wiersdorf",
+    name: "Brother Kyle Swenson",
     color: "yellow"
   },
   closingPrayer:  {
@@ -40,19 +40,19 @@ export const dataSacramentProgram: IProgram = {
   programContents: [
     {
       title: "Speaker",
-      name: "Bishop Brian Shepherd",
+      name: "Brother Christian Crook",
       color: "yellow",
       order: 0
     },
     {
-      title: "Musical Number",
-      name: "Rachelle Brady \"My Heavenly Father Loves Me\"",
+      title: "Intermediate Hymn",
+      name: "#45 Lead Me Into Live Eternal",
       color: "green",
       order: 1
     },
     {
       title: "Speaker",
-      name: "President David Bassett",
+      name: "Sister Shelina Swenson",
       color: "yellow",
       order: 2
     },
