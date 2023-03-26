@@ -46,7 +46,7 @@ export const dataSacramentProgram: IProgram = {
     },
     {
       title: "Speaker",
-      name: "Brother Kyle Swenson",
+      name: "Brother Scott Moore",
       color: "yellow",
       order: 1
     },
@@ -58,7 +58,7 @@ export const dataSacramentProgram: IProgram = {
     },
     {
       title: "Speaker",
-      name: "Brother Scott Moore",
+      name: "Brother Kyle Swenson",
       color: "yellow",
       order: 3
     },
