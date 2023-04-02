@@ -1,7 +1,7 @@
 import { IProgram } from '../components/modules/sacrament-program/sacrament-program'
 
 export const dataSacramentProgram: IProgram = {
-  date: "Sunday, March 26th, 2023",
+  date: "Sunday, April 2nd, 2023",
   presiding: {
     title: "Presiding",
     name: "Bishop Brian Shepherd",
