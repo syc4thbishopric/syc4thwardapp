@@ -29,12 +29,12 @@ export const dataSacramentProgram: IProgram = {
   },
   openingPrayer: {
     title: "Opening Prayer",
-    name: "Brother Blake Williams",
+    name: "Sister Marie Williams",
     color: "yellow"
   },
   closingPrayer:  {
     title: "Closing Prayer",
-    name: "Sister Marie Williams",
+    name: "Brother Blake Williams",
     color: "yellow"
   },
   programContents: [
