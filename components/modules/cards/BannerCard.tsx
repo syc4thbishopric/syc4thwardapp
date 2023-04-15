@@ -27,8 +27,7 @@ const options = {
   validate: true,
 }
 
-const BannerCard = ({ ...card }: IBannerCard) => {
-  console.log("card",card.button.link.label?.text)
+const BannerCard = ({ ...card }: any) => {
   return (
     <div className="bg-white shadow-xl rounded-lg border-2">
       <div className="px-4 py-5 sm:p-6">
