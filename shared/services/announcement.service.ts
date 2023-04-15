@@ -55,7 +55,6 @@ export async function getAnnouncements(organization: string): Promise<IAnnouncem
     await axios.get(organization)
           .then(function (response) {
             const jsonData = csvJSON(response.data)
-              console.log(jsonData)
               if (jsonData[0].title !== 'title') {
                  finalAnnouncements = jsonData.map(item => {
                     if (item.title && item.date && item.time && item.description) {

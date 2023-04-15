@@ -27,8 +27,6 @@ function Sacrament({responseProgram, program}) {
   const sundayDate = getScheduleDate(getNextSunday());
   const programDate = getScheduleDate(responseProgram.date)
   const size = useWindowSize();
-  console.log("sundayDate",sundayDate,"programDate",programDate)
-  // console.log("response",responseProgram)
 
   return (
     <>

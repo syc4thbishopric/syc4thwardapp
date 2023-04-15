@@ -28,6 +28,7 @@ const options = {
 }
 
 const BannerCard = ({ ...card }: IBannerCard) => {
+  console.log("card",card.button.link.label?.text)
   return (
     <div className="bg-white shadow-xl rounded-lg border-2">
       <div className="px-4 py-5 sm:p-6">
@@ -37,7 +38,7 @@ const BannerCard = ({ ...card }: IBannerCard) => {
             <div className="text-sm text-primary">{card.subtitle}</div>
             <Linkify tagName="p" options={options} className="bg-white mt-2 text-sm text-gray-500 rounded-xl">{card.paragraph && <p>{card.paragraph}</p>}</Linkify>
           </div>
-          {card.button.text && (
+          {card.button.text && card.button.link.label?.text !== 'image-view' && (
             <div className="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
             <PrimaryButton size="sm" type="dark" color="primary" link={card.button.link}>
               {card.button.text}
@@ -45,6 +46,9 @@ const BannerCard = ({ ...card }: IBannerCard) => {
           </div>
           )}
         </div>
+        {card.button.link.label?.text === 'image-view' && (
+          <img className="mt-5 w-full object-cover" src={card.button.link.url} />
+        )}
       </div>
     </div>
   )

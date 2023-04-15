@@ -99,7 +99,7 @@ function Home({announcements, dataCards}) {
       <div className="pt-16">
         <HeroCard {...dataSundayMeeting} />
       </div>
-      <div className="relative">
+      <div className="relative mb-7">
           <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
           {size.width > 1050 && (
               <button
@@ -111,9 +111,9 @@ function Home({announcements, dataCards}) {
           )}
       </div>
       {dataBannerCards.length > 0 && (
-        <div className="mt-7">
+        <div className="lg:grid gap-4 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:items-start">
           {dataBannerCards.map((card: IBannerCard) => (
-            <div key={card.title} className="py-4 w-full">
+            <div key={card.title} className="w-full">
               <BannerCard {...card} />
             </div>
           ))}
