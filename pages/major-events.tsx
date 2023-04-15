@@ -7,7 +7,6 @@ import {
 } from "../shared/utils/announcement.util"
 import React, { useState } from 'react'
 import {convertAnnouncements, getAllAnnouncements, getAnnouncements} from "../shared/services/announcement.service";
-import { getSacramentMusic } from "../shared/services/sacrament-program.service"
 
 import PageHeader from "../components/elements/headers/PageHeader"
 import {setHttpHeaders} from "../shared/utils/api.util";
@@ -20,7 +19,6 @@ import Icon from "../components/elements/icons/Icon"
 export const getServerSideProps = async ({ req, res }) => {
   setHttpHeaders(res)
   const [announcements, dataCards] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest())])
-  const program = await getSacramentMusic(new Date(2023, 0, 22))
   return {
     props: {
       announcements: await announcements.json()
