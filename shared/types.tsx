@@ -3,7 +3,7 @@ export type IColor = "primary" | "blue" | "red" | "green" | "gray"
 export type IButton = {
   text?: string
   color?: IColor
-  link?: ILink | ILink[]
+  link?: ILink
   modal?: IModal
   disabled?: boolean
 }
