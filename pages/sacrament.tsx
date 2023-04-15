@@ -6,26 +6,29 @@ import Icon from "../components/elements/icons/Icon"
 import Layout from "../components/layouts/Layout"
 import SacramentProgram from "../components/modules/sacrament-program/sacrament-program"
 import { dataSacramentProgram } from "../data/dataSacramentProgram"
-import { dataCardsRequest } from "../shared/services/data-card.service"
+import { sacramentProgramRequest } from "../shared/services/sacrament-program.service"
 import { setHttpHeaders } from "../shared/utils/api.util"
 import { getNextSunday, getScheduleDate } from "../shared/utils/date.util"
 import { useWindowSize } from "../shared/utils/general.util"
 
 export const getServerSideProps = async ({req, res}) => {
   setHttpHeaders(res)
-  const [dataCards] = await Promise.all([fetch(dataCardsRequest())])
+  const [responseProgram] = await Promise.all([fetch(sacramentProgramRequest())])
   return {
     props: {
-      dataCards: (await dataCards.json()).sort((a, b) => a.order - b.order),
+      responseProgram: (await responseProgram.json()),
       program: dataSacramentProgram
     }
   }
 }
 
-function Sacrament({dataCards, program}) {
+function Sacrament({responseProgram, program}) {
   // const dataSacramentCards: IImageCard[] = convertImageCard(filterByType(dataCards, "sacrament-card"))
   const sundayDate = getScheduleDate(getNextSunday());
+  const programDate = getScheduleDate(responseProgram.date)
   const size = useWindowSize();
+  console.log("sundayDate",sundayDate,"programDate",programDate)
+  // console.log("response",responseProgram)
 
   return (
     <>
@@ -37,18 +40,18 @@ function Sacrament({dataCards, program}) {
         </PrimaryButton>
         <SectionHeader title={sundayDate.dateFormatted} />
         <Divider className="mt-8 md:mt-12 lg:mt-14" />
-        {sundayDate.dateFormatted == program.date ?
+        {sundayDate.dateFormatted == programDate.dateFormatted ?
         <div className="py-3 w-full">
             <SacramentProgram
-              date={program.date} 
-              presiding={program.presiding}
-              conducting={program.conducting}
-              openingHymn={program.openingHymn}
-              closingHymn={program.closingHymn}
-              sacramentHymn={program.sacramentHymn}
-              openingPrayer={program.openingPrayer}
-              closingPrayer={program.closingPrayer}
-              programContents={program.programContents}
+              date={programDate.dateFormatted} 
+              presiding={responseProgram.presiding}
+              conducting={responseProgram.conducting}
+              openingHymn={responseProgram.openHymn}
+              closingHymn={responseProgram.closingHymn}
+              sacramentHymn={responseProgram.sacramentHymn}
+              openingPrayer={responseProgram.invocation}
+              closingPrayer={responseProgram.benediction}
+              programContents={responseProgram.programContent}
             />
           </div> : <SectionHeader title={`Program is forthcoming. Please check later`} />}
         <PrimaryButton type="link" className="mt-20" link={{ url: "/sunday" }}>

@@ -20,11 +20,18 @@ export type IDateDisplay = {
   isOver: boolean
 }
 
-export function getScheduleDate(date: Date) {
+export function getScheduleDate(date: any) {
+  let dateType = new Date()
+  if (date instanceof Date && typeof date.getMonth === 'function') {
+    dateType = date
+  } else {
+    const dateParts = date.split('-')
+    dateType = new Date(dateParts[0], dateParts[1] - 1, dateParts[2])
+  }
   return {
-    date: date,
-    dateFormatted: dayjs(date).format("dddd, MMMM Do, YYYY"),
-    weekOfTheMonth: Math.ceil(date.getDate() / 7),
+    date: dateType,
+    dateFormatted: dayjs(dateType).format("dddd, MMMM Do, YYYY"),
+    weekOfTheMonth: Math.ceil(dateType.getDate() / 7),
   }
 }
 
