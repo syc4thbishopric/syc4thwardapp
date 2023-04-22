@@ -5,7 +5,6 @@ import SectionHeader from "../components/elements/headers/SectionHeader"
 import Icon from "../components/elements/icons/Icon"
 import Layout from "../components/layouts/Layout"
 import SacramentProgram from "../components/modules/sacrament-program/sacrament-program"
-import { dataSacramentProgram } from "../data/dataSacramentProgram"
 import { sacramentProgramRequest } from "../shared/services/sacrament-program.service"
 import { setHttpHeaders } from "../shared/utils/api.util"
 import { getNextSunday, getScheduleDate } from "../shared/utils/date.util"
@@ -16,8 +15,7 @@ export const getServerSideProps = async ({req, res}) => {
   const [responseProgram] = await Promise.all([fetch(sacramentProgramRequest())])
   return {
     props: {
-      responseProgram: (await responseProgram.json()),
-      program: dataSacramentProgram
+      responseProgram: (await responseProgram.json())
     }
   }
 }
