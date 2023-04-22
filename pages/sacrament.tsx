@@ -25,7 +25,7 @@ export const getServerSideProps = async ({req, res}) => {
 function Sacrament({responseProgram, program}) {
   // const dataSacramentCards: IImageCard[] = convertImageCard(filterByType(dataCards, "sacrament-card"))
   const sundayDate = getScheduleDate(getNextSunday());
-  const programDate = getScheduleDate(responseProgram.date)
+  const programDate = getScheduleDate(responseProgram.date) ? getScheduleDate(responseProgram.date) : getScheduleDate('2099-01-01');
   const size = useWindowSize();
 
   return (

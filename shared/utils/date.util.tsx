@@ -22,6 +22,9 @@ export type IDateDisplay = {
 
 export function getScheduleDate(date: any) {
   let dateType = new Date()
+  if (!date) {
+    return;
+  }
   if (date instanceof Date && typeof date.getMonth === 'function') {
     dateType = date
   } else {
