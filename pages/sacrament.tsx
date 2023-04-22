@@ -30,21 +30,22 @@ function Sacrament({responseProgram, program}) {
 
   return (
     <>
-      <PageHeader title="Sacrament Meeting" subtitle="Please see below for the program for today" />
+      <PageHeader title="Sacrament Meeting Program" />
       <Layout>
         <PrimaryButton type="link" className="absolute top-2 md:top-5" link={{ url: "/sunday" }}>
           <Icon name="chevron-left" className="h-5 w-5" />
           <span className="mr-2 text-sm uppercase font-semibold">Back to Sunday Schedule</span>
         </PrimaryButton>
         <SectionHeader title={sundayDate.dateFormatted} />
-        <Divider className="mt-8 md:mt-12 lg:mt-14" />
         {sundayDate.dateFormatted == programDate.dateFormatted ?
-        <div className="py-3 w-full">
+        <div className="w-full">
             <SacramentProgram
               date={programDate.dateFormatted} 
               presiding={responseProgram.presiding}
               conducting={responseProgram.conducting}
               openingHymn={responseProgram.openHymn}
+              chorister={responseProgram.chorister}
+              organist={responseProgram.organist}
               closingHymn={responseProgram.closingHymn}
               sacramentHymn={responseProgram.sacramentHymn}
               openingPrayer={responseProgram.invocation}

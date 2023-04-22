@@ -1,3 +1,5 @@
+import { parseHymnNumber } from "../../../shared/services/hymn.service"
+import Hymn from './hymn'
 
 export type IProgramItem = {
   title: string
@@ -7,12 +9,14 @@ export type IProgramItem = {
 }
 
 const ProgramItem = ({...item}: IProgramItem) => {
+  let hymnNumber: number | null
+  if (item.title.includes('Hymn')) {
+    hymnNumber = parseHymnNumber(item.name)
+  }
   return (
-    <div className={`block border-2 border-gray-300`}>
-      <div className={`block py-2 pl-5 border-l-4 border-green-500 z-10`}>
-        <div className="text-primary text-l font-semibold">{item.title}</div>
-        <p className="text-m font-semibold text-gray-900">{item.name}</p>
-      </div>
+    <div className="dots-in-between w-full">
+      <span className="font-bold bg-white pr-3">{item.title}</span>
+      <span className="text-right bg-white float-right pl-3">{hymnNumber ? <Hymn number={hymnNumber} name={item.name} /> : item.name}</span>
     </div>
   )
 }
