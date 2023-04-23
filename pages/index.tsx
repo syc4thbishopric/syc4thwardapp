@@ -111,9 +111,9 @@ function Home({announcements, dataCards}) {
           )}
       </div>
       {dataBannerCards.length > 0 && (
-        <div className="lg:grid gap-4 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:items-start">
+        <div className="lg:grid gap-x-4 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:items-start">
           {dataBannerCards.map((card: IBannerCard) => (
-            <div key={card.title} className="w-full">
+            <div key={card.title} className="w-full mb-4">
               <BannerCard {...card} />
             </div>
           ))}
