@@ -85,13 +85,13 @@ function Home({announcements, dataCards}) {
       <div className="pt-16">
         <HeroCard {...dataSundayMeeting} />
       </div>
-      <div className="flex justify-center items-center mt-4">
+      {/* <div className="flex justify-center items-center mt-4">
         {!isAppInstalled ? (
             <button onClick={promptToInstall} className="bg-primary-500 hover:bg-primary-700 text-white py-2 px-4 rounded-lg">Add to Home Screen</button>
           ) : (
             <div className="text-gray-700">Thanks for installing our app</div>
           )}
-      </div>
+      </div> */}
       <div className="relative mb-7">
           <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." className="pt-10"/>
       </div>
