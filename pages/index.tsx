@@ -22,7 +22,9 @@ import {
     dataCardsRequest
 } from "../shared/services/data-card.service";
 import BannerCard, {IBannerCard} from "../components/modules/cards/BannerCard";
+import { useAddToHomescreenPrompt } from "../components/modules/add-to-homescreen/AddToHomescreen";
 import {config} from "../config";
+import PrimaryButton from "../components/elements/buttons/PrimaryButton"
 
 export const getServerSideProps = async ({ req, res }) => {
   setHttpHeaders(res)
@@ -48,48 +50,32 @@ function Home({announcements, dataCards}) {
   const dataImageCards: IImageCard[] = convertImageCards(filterByType(dataCards, "image-card"))
   const dataMissionaryCards: IImageCard[] = convertImageCards(filterByType(dataCards, "missionary-card"))
   const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
+  const [isAppInstalled, setIsAppInstalled] = useState(false);
+  const [prompt, promptToInstall] = useAddToHomescreenPrompt();
   const size = useWindowSize();
 
   dataMissionaryCards.forEach(card => card.scale = true);
 
-  const announcementsToText = () => {
-      let textExport = 'Sycamores 4th Ward\n\n';
-      if(generalAnnouncements.length > 0 || dataBannerCards.length > 0) {
-          textExport = textExport.concat('General\n\n')
-      }
-      dataBannerCards.forEach(item => {
-          const itemToConcat = `${item.title}\n${item.subtitle}\n${item.paragraph.replace(/(\r\n|\n|\r)/gm, "")}\n\n`;
-          textExport = textExport.concat(itemToConcat);
+  const isPWAInstalled = async () => {
+    if ("getInstalledRelatedApps" in window.navigator) {
+      const relatedApps = await navigator.getInstalledRelatedApps();
+      let installed = false;
+      relatedApps.forEach((app) => {
+        //if your PWA exists in the array it is installed
+        console.log(app.platform, app.url);
+        if (
+          app.url === "https://4thward.sycamoresstake.com/manifest.json" || app.url === "http://192.168.1.65:3000/manifest.json"
+        ) {
+          installed = true;
+        }
       });
-      textExport = textExport.concat(announcementConcatenator(generalAnnouncements))
+      setIsAppInstalled(installed);
+    }
+  };
 
-      if(reliefSocietyAnnouncements.length > 0) {
-          textExport = textExport.concat('Relief Society\n\n')
-      }
-      textExport = textExport.concat(announcementConcatenator(reliefSocietyAnnouncements))
-
-      if(eldersAnnouncements.length > 0) {
-          textExport = textExport.concat('Elders Quorum\n\n')
-      }
-      textExport = textExport.concat(announcementConcatenator(eldersAnnouncements))
-
-      if(youngWomenAnnouncements.length > 0) {
-          textExport = textExport.concat('Young Women\n\n')
-      }
-      textExport = textExport.concat(announcementConcatenator(youngWomenAnnouncements))
-
-      if(youngMenAnnouncements.length > 0) {
-          textExport = textExport.concat('Young Men\n\n')
-      }
-      textExport = textExport.concat(announcementConcatenator(youngMenAnnouncements))
-
-      if(primaryAnnouncements.length > 0) {
-          textExport = textExport.concat('Primary\n\n')
-      }
-      textExport = textExport.concat(announcementConcatenator(primaryAnnouncements))
-
-      alert(textExport)
-  }
+  useEffect(() => {
+    isPWAInstalled();
+  }, [])
 
   return (
     <Layout>
@@ -99,16 +85,15 @@ function Home({announcements, dataCards}) {
       <div className="pt-16">
         <HeroCard {...dataSundayMeeting} />
       </div>
-      <div className="relative mb-7">
-          <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." />
-          {size.width > 1050 && (
-              <button
-                    className="absolute bottom-0 right-0 text-gray-600 hover:bg-gray-50 text-sm px-6 py-1 lg:py-2 w-45 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
-                    onClick={announcementsToText}
-              >
-                  Announcements Text
-              </button>
+      <div className="flex justify-center items-center mt-4">
+        {!isAppInstalled ? (
+            <button onClick={promptToInstall} className="bg-primary-500 hover:bg-primary-700 text-white py-2 px-4 rounded-lg">Add to Home Screen</button>
+          ) : (
+            <div className="text-gray-700">Thanks for installing our app</div>
           )}
+      </div>
+      <div className="relative mb-7">
+          <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." className="pt-10"/>
       </div>
       {dataBannerCards.length > 0 && (
         <div className="lg:grid gap-x-4 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:items-start">
@@ -220,7 +205,7 @@ function Home({announcements, dataCards}) {
       }
       {dataFaceCards.filter((card) => !card.hidden).length > 0 && (
         <>
-          <SectionHeader title="Meet with a member of the bishopric" subtitle="Select a time and quickly schedule your appointment." />
+          <SectionHeader title="Meet with a member of the bishopric" subtitle="Select a time and quickly schedule your appointment." className="pt-10 sm:pt-14 lg:pt-20"/>
           <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
             {dataFaceCards
               .filter((card) => !card.hidden)
@@ -245,7 +230,7 @@ function Home({announcements, dataCards}) {
       )}
       {dataMissionaryCards.filter((card) => !card.hidden).length > 0 && (
         <>
-          <SectionHeader title="Missionaries Serving" subtitle="Take some time to write our missionaries." />
+          <SectionHeader title="Missionaries Serving" subtitle="Take some time to write our missionaries." className="pt-10 sm:pt-14 lg:pt-20"/>
           <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 pt-5">
             {dataMissionaryCards
               .filter((card) => !card.hidden)
@@ -259,7 +244,7 @@ function Home({announcements, dataCards}) {
       )}
       {dataImageCards.filter((card) => !card.hidden).length > 0 && (
         <>
-          <SectionHeader title="Learn what's going on" subtitle="Below are some of the happenings of the ward and ways to become involved." />
+          <SectionHeader title="Learn what's going on" subtitle="Below are some of the happenings of the ward and ways to become involved." className="pt-10 sm:pt-14 lg:pt-20"/>
           <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 pt-5">
             {dataImageCards
               .filter((card) => !card.hidden)
