@@ -12,7 +12,7 @@ import {
     generateAnnouncementKey,
 } from "../shared/utils/announcement.util"
 import React, { useState, useEffect } from 'react'
-import {convertAnnouncements, getAllAnnouncements, getAnnouncements} from "../shared/services/announcement.service";
+import {convertAnnouncements, getAllAnnouncements} from "../shared/services/announcement.service";
 import {filterById, filterByType, setHttpHeaders} from "../shared/utils/api.util";
 import {useWindowSize} from '../shared/utils/general.util'
 import {
@@ -26,33 +26,61 @@ import { useAddToHomescreenPrompt } from "../components/modules/add-to-homescree
 import {config} from "../config";
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
 
-export const getServerSideProps = async ({ req, res }) => {
-  setHttpHeaders(res)
-  const [announcements, dataCards] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest())])
-  return {
-    props: {
-      announcements: await announcements.json(),
-      dataCards: (await dataCards.json()).sort((a, b) => a.order - b.order),
-    },
-  }
-}
+// export const getServerSideProps = async ({ req, res }) => {
+//   setHttpHeaders(res)
+//   const [announcements, dataCards] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest())])
+//   return {
+//     props: {
+//       announcements: await announcements.json(),
+//       dataCards: (await dataCards.json()).sort((a, b) => a.order - b.order),
+//     },
+//   }
+// }
 
-function Home({announcements, dataCards}) {
-  const [eldersAnnouncements, setEldersAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "elders")))
-  const [reliefSocietyAnnouncements, setReliefSocietyAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "relief-society")))
-  const [youngWomenAnnouncements, setYoungWomenAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "young-women")))
-  const [primaryAnnouncements, setPrimaryAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "primary")))
-  const [generalAnnouncements, setGeneralAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "general")))
-  const [youngMenAnnouncements, setYoungMenAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "young-men")))
-  const dataBannerCards: IBannerCard[] = convertBannerCards(filterByType(dataCards, "banner-card"))
-  const dataFaceCards: IContactCard[] = convertFaceCards(filterByType(dataCards, "face-card"))
-  const dataMiniCards: IMiniCard[] = convertMiniCards(filterByType(dataCards, "mini-card"))
-  const dataImageCards: IImageCard[] = convertImageCards(filterByType(dataCards, "image-card"))
-  const dataMissionaryCards: IImageCard[] = convertImageCards(filterByType(dataCards, "missionary-card"))
-  const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
+function Home({}) {
+  const [eldersAnnouncements, setEldersAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [reliefSocietyAnnouncements, setReliefSocietyAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [youngWomenAnnouncements, setYoungWomenAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [primaryAnnouncements, setPrimaryAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [generalAnnouncements, setGeneralAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [youngMenAnnouncements, setYoungMenAnnouncements] = useState<IAnnouncement[]|undefined>([])
+  const [dataBannerCards, setDataBannerCards] = useState<IBannerCard[]>([])
+  const [dataFaceCards, setDataFaceCards] = useState<IContactCard[]>([])
+  const [dataMiniCards, setDataMiniCards] = useState<IMiniCard[]>([])
+  const [dataImageCards, setDataImageCards] = useState<IImageCard[]>([])
+  const [dataMissionaryCards, setDataMissionaryCards] = useState<IImageCard[]>([])
+  const [dataSundayMeeting, setDataSundayMeeting] = useState<IHeroCard>()
+  // const dataBannerCards: IBannerCard[] = convertBannerCards(filterByType(dataCards, "banner-card"))
+  // const dataFaceCards: IContactCard[] = convertFaceCards(filterByType(dataCards, "face-card"))
+  // const dataMiniCards: IMiniCard[] = convertMiniCards(filterByType(dataCards, "mini-card"))
+  // const dataImageCards: IImageCard[] = convertImageCards(filterByType(dataCards, "image-card"))
+  // const dataMissionaryCards: IImageCard[] = convertImageCards(filterByType(dataCards, "missionary-card"))
+  // const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
   const [isAppInstalled, setIsAppInstalled] = useState(false);
   const [prompt, promptToInstall] = useAddToHomescreenPrompt();
   const size = useWindowSize();
+
+  useEffect(() => {
+    getAllAnnouncements()
+      .then(res => {
+        setEldersAnnouncements(convertAnnouncements(res.data.filter((item) => item.type === "elders")))
+        setReliefSocietyAnnouncements(convertAnnouncements(res.data.filter((item) => item.type === "relief-society")))
+        setYoungMenAnnouncements(convertAnnouncements(res.data.filter((item) => item.type === "young-ment")))
+        setYoungWomenAnnouncements(convertAnnouncements(res.data.filter((item) => item.type === "young-women")))
+        setPrimaryAnnouncements(convertAnnouncements(res.data.filter((item) => item.type === "primary")))
+        setGeneralAnnouncements(convertAnnouncements(res.data.filter((item) => item.type === "general")))
+      })
+    dataCardsRequest()
+      .then(res => {
+        const resSorted = res.data.sort((a, b) => a.order - b.order)
+        setDataBannerCards(convertBannerCards(filterByType(resSorted, "banner-card")))
+        setDataFaceCards(convertFaceCards(filterByType(resSorted, "face-card")))
+        setDataMiniCards(convertMiniCards(filterByType(resSorted, "mini-card")))
+        setDataImageCards(convertImageCards(filterByType(resSorted, "image-card")))
+        setDataMissionaryCards(convertImageCards(filterByType(resSorted, "missionary-card")))
+        setDataSundayMeeting(convertHeroCard(filterById(resSorted, config.pages.index.heroCardId), "dark"))
+      })
+  }, [])
 
   dataMissionaryCards.forEach(card => card.scale = true);
 

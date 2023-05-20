@@ -4,13 +4,23 @@ import { IHeroCard } from "../../components/modules/cards/HeroCard"
 import { IImageCard } from "../../components/modules/cards/ImageCard"
 import { IMiniCard } from "../../components/modules/cards/MiniCard"
 import { config } from "../../config"
+import axios from "axios";
 
 const { apiUrl, apiWard, apiHeaders } = config
 
 /**
  * REQUESTS
  */
-export const dataCardsRequest = () => new Request(`${apiUrl}/datacard/${apiWard}`, apiHeaders)
+// export const dataCardsRequest = () => new Request(`${apiUrl}/datacard/${apiWard}`, apiHeaders)
+
+export const dataCardsRequest = async () => {
+  return await axios.get(`${apiUrl}/datacard/${apiWard}`, {
+    headers: {
+      "x-api-key": process.env.LDW_KEY,
+      "Content-Type": "application/json",
+    }
+  })
+}
 
 /**
  * CONVERTER - MINI CARDS

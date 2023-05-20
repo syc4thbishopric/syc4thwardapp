@@ -6,7 +6,16 @@ import { config } from "../../config"
 
 const { apiUrl, apiWard, apiHeaders } = config
 
-export const getAllAnnouncements = () => new Request(`${apiUrl}/announcement/${apiWard}`, apiHeaders)
+// export const getAllAnnouncements = () => new Request(`${apiUrl}/announcement/${apiWard}`, apiHeaders)
+
+export const getAllAnnouncements = async () => {
+  return await axios.get(`${apiUrl}/announcement/${apiWard}`,{
+    headers: {
+      "x-api-key": process.env.LDW_KEY,
+      "Content-Type": "application/json",
+    }
+  })
+}
 
 /**
  * CONVERTER - ANNOUNCEMENTS

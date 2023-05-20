@@ -6,7 +6,7 @@ import {
     generateAnnouncementKey,
 } from "../shared/utils/announcement.util"
 import React, { useState } from 'react'
-import {convertAnnouncements, getAllAnnouncements, getAnnouncements} from "../shared/services/announcement.service";
+import {convertAnnouncements, getAllAnnouncements} from "../shared/services/announcement.service";
 
 import PageHeader from "../components/elements/headers/PageHeader"
 import {setHttpHeaders} from "../shared/utils/api.util";
