@@ -30,7 +30,7 @@ function Sacrament({responseProgram, program}) {
     <>
       <PageHeader title="Sacrament Meeting Program" />
       <Layout>
-        <PrimaryButton type="link" className="absolute top-2 md:top-5" link={{ url: "/sunday" }}>
+        <PrimaryButton type="link" className="top-2 md:top-5" link={{ url: "/sunday" }}>
           <Icon name="chevron-left" className="h-5 w-5" />
           <span className="mr-2 text-sm uppercase font-semibold">Back to Sunday Schedule</span>
         </PrimaryButton>
