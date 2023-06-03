@@ -14,7 +14,7 @@ const TempleChart = ({templeData}) => {
         data: ['Adults','Youth']
       },
       yAxis: {
-        max: 2100,
+        max: 2500,
       },
       grid: {
         left: 40,
