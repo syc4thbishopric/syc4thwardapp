@@ -4,6 +4,7 @@ import { IHeroCard } from "../../components/modules/cards/HeroCard"
 import { IImageCard } from "../../components/modules/cards/ImageCard"
 import { IMiniCard } from "../../components/modules/cards/MiniCard"
 import { config } from "../../config"
+import { csvJSON } from "../utils/announcement.util"
 
 const { apiUrl, apiWard, apiHeaders } = config
 
@@ -11,6 +12,8 @@ const { apiUrl, apiWard, apiHeaders } = config
  * REQUESTS
  */
 export const dataCardsRequest = () => new Request(`${apiUrl}/datacard/${apiWard}`, apiHeaders)
+
+export const templeChallengeRequest = () => new Request('https://docs.google.com/spreadsheets/d/1i1gIszkbu9hhtQU68tL5AXwDBNFieasHBM7zUvi3Fxw/gviz/tq?tqx=out:json&tq=SELECT%20A,B,C,D,E')
 
 /**
  * CONVERTER - MINI CARDS
@@ -125,6 +128,22 @@ export const convertHeroCard = (heroCard: IDataCardResponse, color: "dark" | "li
     },
     type: color,
   }
+}
+
+/**
+ * Temple Data Handler
+ */
+export const templeDataHandler = (templeCsvData) => {
+  let adults = 0
+  let youth = 0
+  templeCsvData.table.rows.forEach(item => {
+    if (item.c[2].v == 'Adult') {
+      adults += item.c[4].v
+    } else {
+      youth += item.c[4].v
+    }
+  })
+  return {adults,youth}
 }
 
 

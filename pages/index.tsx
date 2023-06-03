@@ -19,25 +19,35 @@ import {
     convertBannerCards,
     convertFaceCards, convertHeroCard, convertImageCards,
     convertMiniCards,
-    dataCardsRequest
+    dataCardsRequest,
+    templeChallengeRequest,
+    templeDataHandler
 } from "../shared/services/data-card.service";
 import BannerCard, {IBannerCard} from "../components/modules/cards/BannerCard";
 import { useAddToHomescreenPrompt } from "../components/modules/add-to-homescreen/AddToHomescreen";
 import {config} from "../config";
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
+import TempleChart from "../components/charts/TempleChart"
 
 export const getServerSideProps = async ({ req, res }) => {
   setHttpHeaders(res)
-  const [announcements, dataCards] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest())])
+  const [announcements, dataCards, templeData] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest()), fetch(templeChallengeRequest())])
+  // console.log('templeResult', await templeData)
+  const templeText = await templeData.text();
+  const from = templeText.indexOf("{");
+  const to   = templeText.lastIndexOf("}")+1; 
+  const jsonText = templeText.slice(from, to);
+  let templeFinal = templeDataHandler(JSON.parse(jsonText))
   return {
     props: {
       announcements: await announcements.json(),
       dataCards: (await dataCards.json()).sort((a, b) => a.order - b.order),
+      temple: templeFinal
     },
   }
 }
 
-function Home({announcements, dataCards}) {
+function Home({announcements, dataCards, temple}) {
   const [eldersAnnouncements, setEldersAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "elders")))
   const [reliefSocietyAnnouncements, setReliefSocietyAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "relief-society")))
   const [youngWomenAnnouncements, setYoungWomenAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "young-women")))
@@ -102,6 +112,7 @@ function Home({announcements, dataCards}) {
               <BannerCard {...card} />
             </div>
           ))}
+        <TempleChart templeData={temple}/>
         </div>
       )}
       {generalAnnouncements.length < 1 && youngMenAnnouncements.length < 1  && reliefSocietyAnnouncements.length < 1  &&
