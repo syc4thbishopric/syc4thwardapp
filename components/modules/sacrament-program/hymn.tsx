@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react"
 
-import { getHymnByNumber } from "../../../shared/services/hymn.service"
+import { getHymnByNumber, getChildHymnByNumber } from "../../../shared/services/hymn.service"
 
 type Props = {
+  type: string
   number: number
   name: string
 }
 
-const Hymn: React.FC<Props> = ({ number, name }) => {
+const Hymn: React.FC<Props> = ({ type, number, name }) => {
   const [href, setHref] = useState<string | null>(null)
 
   useEffect(() => {
     async function loadHymn() {
-      const href = await getHymnByNumber(number)
-      setHref(href)
+      let href = "";
+      if (type == "children") {
+        href = await getChildHymnByNumber(number)
+        setHref(href)
+      } else if (type == "regular") {
+        href = await getHymnByNumber(number)
+        setHref(href)
+      }
     }
     loadHymn()
   }, [number])

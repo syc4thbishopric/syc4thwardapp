@@ -17,6 +17,19 @@ export async function getHymnByNumber(number: number): Promise<string | null> {
   return data.href
 }
 
+export async function getChildHymnByNumber(number: number): Promise<string | null> {
+  const res = await fetch(`/api/child-hymn/${number}`)
+
+  if (!res.ok) {
+    // Handle the error as appropriate
+    return null
+  }
+
+  const data: Hymn = await res.json()
+
+  return data.href
+}
+
 export function parseHymnNumber(str: string): number | null {
   const match = str.match(/#(\d+)/)
   if (match && match[1]) {
