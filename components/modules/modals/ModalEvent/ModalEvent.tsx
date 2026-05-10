@@ -1,3 +1,4 @@
+import { Box, Chip, Divider, Stack, Typography } from "@mui/material"
 import PrimaryButton from "../../../elements/buttons/PrimaryButton"
 import { IModal, IModalEventData } from "../../../../shared/types"
 import { getDateDisplay } from "../../../../shared/utils/date.util"
@@ -5,72 +6,86 @@ import { getDateDisplay } from "../../../../shared/utils/date.util"
 const ModalEvent = ({ data }: IModal) => {
   const { title, subtitle, image, button, date, duration, location, details } = data as IModalEventData
   const dateDisplay = getDateDisplay(date, 7, duration)
+
+  const relativeChipColor = dateDisplay.isOver ? "error" : dateDisplay.isWithin ? "success" : "primary"
+
   return (
-    <div className="bg-white overflow-auto max-w-6xl w-full max-h-full">
+    <Box sx={{ bgcolor: "background.paper", overflow: "hidden" }}>
       {image && (
-        <div className="flex flex-shrink-0">
-          <img className="h-36 w-full object-cover object-center lg:h-56" src={image.src} alt={image.alt || ""} />
-        </div>
+        <Box
+          component="img"
+          src={image.src}
+          alt={image.alt || ""}
+          sx={{ display: "block", width: "100%", height: { xs: 180, lg: 240 }, objectFit: "cover", objectPosition: "center" }}
+        />
       )}
-      <div className="bg-white shadow overflow-hidden">
-        <div className="flex justify-between px-4 py-5 sm:px-6">
-          <div>
-            <h3 className="text-lg sm:text-2xl leading-6 font-semibold text-black">{title}</h3>
-            {subtitle && <p className="mt-1 max-w-2xl text-md text-gray-500">{subtitle}</p>}
-          </div>
+      <Box>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          justifyContent="space-between"
+          alignItems={{ xs: "flex-start", sm: "center" }}
+          sx={{ px: { xs: 3, sm: 4 }, py: { xs: 3, sm: 4 } }}
+        >
+          <Box sx={{ minWidth: 0 }}>
+            <Typography id="modal-event-title" variant="h4" sx={{ fontSize: { xs: "1.5rem", sm: "2rem" }, fontWeight: 700, color: "text.primary" }}>
+              {title}
+            </Typography>
+            {subtitle && (
+              <Typography sx={{ mt: 1, maxWidth: 560, color: "text.secondary" }}>
+                {subtitle}
+              </Typography>
+            )}
+          </Box>
           {button?.link && (
-            <PrimaryButton link={button.link} color={button.color} size="sm" className="whitespace-nowrap">
+            <PrimaryButton link={button.link} color={button.color} size="sm" sx={{ whiteSpace: "nowrap" }}>
               {button.text}
             </PrimaryButton>
           )}
-        </div>
-        <div className="border-t border-gray-200 px-4 py-2 sm:p-0">
-          <dl className="sm:divide-y sm:divide-gray-200">
-            {date && (
-              <>
-                <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-md font-medium text-gray-500">Date</dt>
-                  <dd className="mt-1 text-md font-semibold text-gray-900 sm:mt-0 sm:col-span-2 flex">
-                    {dateDisplay.dateFullDisplay}
-                    <span
-                      className={`inline-flex items-center ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        dateDisplay.isOver
-                          ? "bg-red-100 text-red-800"
-                          : dateDisplay.isWithin
-                          ? "bg-green-100 text-green-800"
-                          : "bg-primary-100 text-primary-800"
-                      }`}
-                    >
-                      {dateDisplay.relativeDisplay}
-                    </span>
-                  </dd>
-                </div>
-                <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt className="text-md font-medium text-gray-500">Time</dt>
-                  {dateDisplay.timeRangeDisplay ? (
-                    <dd className="mt-1 text-md font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{dateDisplay.timeRangeDisplay}</dd>
-                  ) : (
-                    <dd className="mt-1 text-md font-semibold text-gray-900 sm:mt-0 sm:col-span-2">{dateDisplay.timeDisplay}</dd>
-                  )}
-                </div>
-              </>
-            )}
-            {location && (
-              <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-md font-medium text-gray-500">Location</dt>
-                <dd className="mt-1 text-md font-semibold text-gray-900 sm:mt-0 sm:col-span-2 whitespace-pre-wrap">{location}</dd>
-              </div>
-            )}
-            {details && (
-              <div className="py-2 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-md font-medium text-gray-500">Details</dt>
-                <dd className="mt-1 text-sm font-semibold text-gray-900 sm:mt-0 sm:col-span-2 whitespace-pre-wrap">{details}</dd>
-              </div>
-            )}
-          </dl>
-        </div>
-      </div>
-    </div>
+        </Stack>
+        <Divider />
+        <Stack divider={<Divider flexItem />} sx={{ px: { xs: 3, sm: 4 }, py: 1 }}>
+          {date && (
+            <>
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 0.75, sm: 3 }} sx={{ py: 2.5 }}>
+                <Typography sx={{ width: { sm: 140 }, flexShrink: 0, fontWeight: 600, color: "text.secondary" }}>Date</Typography>
+                <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap">
+                  <Typography sx={{ fontWeight: 600, color: "text.primary" }}>{dateDisplay.dateFullDisplay}</Typography>
+                  <Chip
+                    size="small"
+                    label={dateDisplay.relativeDisplay}
+                    color={relativeChipColor}
+                    sx={{
+                      bgcolor: dateDisplay.isOver ? "error.light" : dateDisplay.isWithin ? "success.light" : "primary.light",
+                      color: dateDisplay.isOver ? "error.dark" : dateDisplay.isWithin ? "success.dark" : "primary.dark",
+                      fontWeight: 600,
+                    }}
+                  />
+                </Stack>
+              </Stack>
+              <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 0.75, sm: 3 }} sx={{ py: 2.5 }}>
+                <Typography sx={{ width: { sm: 140 }, flexShrink: 0, fontWeight: 600, color: "text.secondary" }}>Time</Typography>
+                <Typography sx={{ fontWeight: 600, color: "text.primary" }}>
+                  {dateDisplay.timeRangeDisplay || dateDisplay.timeDisplay}
+                </Typography>
+              </Stack>
+            </>
+          )}
+          {location && (
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 0.75, sm: 3 }} sx={{ py: 2.5 }}>
+              <Typography sx={{ width: { sm: 140 }, flexShrink: 0, fontWeight: 600, color: "text.secondary" }}>Location</Typography>
+              <Typography sx={{ fontWeight: 600, color: "text.primary", whiteSpace: "pre-wrap" }}>{location}</Typography>
+            </Stack>
+          )}
+          {details && (
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={{ xs: 0.75, sm: 3 }} sx={{ py: 2.5 }}>
+              <Typography sx={{ width: { sm: 140 }, flexShrink: 0, fontWeight: 600, color: "text.secondary" }}>Details</Typography>
+              <Typography sx={{ color: "text.primary", whiteSpace: "pre-wrap" }}>{details}</Typography>
+            </Stack>
+          )}
+        </Stack>
+      </Box>
+    </Box>
   )
 }
 

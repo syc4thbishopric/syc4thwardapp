@@ -1,3 +1,4 @@
+import { Card, CardContent, Stack, Typography } from "@mui/material"
 import PrimaryButton from "../../elements/buttons/PrimaryButton"
 import { IButton } from "../../../shared/types"
 
@@ -12,18 +13,45 @@ export type IMiniCard = {
 const MiniCard = ({ ...card }: IMiniCard) => {
   const buttonColor = card.button && card.button.color ? card.button.color : "primary"
   return (
-    <div className="col-span-1 bg-white text-center rounded-lg shadow-xl p-8">
-      <div className="flex flex-col items-center">
-        <div className="text-primary font-semibold">{card.subtitle}</div>
-        <h3 className="text-xl text-center font-bold">{card.title}</h3>
-        {card.paragraph && <p className="mt-3 text-base text-gray-500">{card.paragraph}</p>}
-      </div>
+    <Card sx={{ height: "100%", boxShadow: 6 }}>
+      <CardContent sx={{ p: 4, textAlign: "center" }}>
+        <Stack spacing={1.5} alignItems="center">
+          <Typography variant="body2" sx={{ color: "primary.main", fontWeight: 700 }}>
+            {card.subtitle}
+          </Typography>
+          <Typography variant="h5" sx={{ fontWeight: 700 }}>
+            {card.title}
+          </Typography>
+          {card.paragraph && <Typography color="text.secondary">{card.paragraph}</Typography>}
+        </Stack>
+      </CardContent>
       {card.button && (
-        <PrimaryButton type="dark" color={buttonColor} link={card.button.link} className="mt-5">
-          {card.button.text}
-        </PrimaryButton>
+        <Stack sx={{ px: 4, pb: 4 }} alignItems="center">
+          <PrimaryButton
+            type="dark"
+            color={buttonColor}
+            link={card.button.link}
+            sx={{
+              bgcolor: buttonColor === "green" ? "#16A34A" : buttonColor === "blue" ? "#2563EB" : buttonColor === "red" ? "#DC2626" : buttonColor === "gray" ? "#6B7280" : "#4F46E5",
+              color: "common.white",
+              textDecoration: "none",
+              "&, & .MuiButtonBase-root, & .MuiTypography-root, & span, & svg": {
+                color: "#fff !important",
+              },
+              "&:visited": {
+                color: "common.white",
+              },
+              "&:hover": {
+                bgcolor: buttonColor === "green" ? "#15803D" : buttonColor === "blue" ? "#1D4ED8" : buttonColor === "red" ? "#B91C1C" : buttonColor === "gray" ? "#374151" : "#312E81",
+                color: "common.white",
+              },
+            }}
+          >
+            {card.button.text}
+          </PrimaryButton>
+        </Stack>
       )}
-    </div>
+    </Card>
   )
 }
 

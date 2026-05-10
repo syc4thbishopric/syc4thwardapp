@@ -41,7 +41,7 @@ export function getScheduleDate(date: any) {
 export function getNextSunday(): Date {
   const rawDate = new Date()
   const dayOfWeek = 7
-  let resultDate = new Date(rawDate.getTime())
+  const resultDate = new Date(rawDate.getTime())
   resultDate.setDate(rawDate.getDate() + ((7 + dayOfWeek - rawDate.getDay()) % 7))
   return resultDate
 }

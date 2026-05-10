@@ -1,7 +1,5 @@
 import { IAnnouncement } from "../../components/modules/announcements/Announcement"
 import { isBeforeNow } from "./date.util"
-import fs from 'fs'
-import axios from "axios";
 import moment from "moment";
 
 const keepForHoursFromStart = 2
@@ -44,7 +42,7 @@ export function generateAnnouncementKey(announcement: IAnnouncement) {
 }
 
 export function csvJSON(rawData, delimiter = ',') {
-  let data = rawData.replace(/['"]+/g, '');
+  const data = rawData.replace(/['"]+/g, '');
   const titles = data.slice(0, data.indexOf('\n')).split(delimiter);
   return data
     .slice(data.indexOf('\n') + 1)

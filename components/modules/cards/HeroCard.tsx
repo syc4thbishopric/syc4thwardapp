@@ -1,3 +1,4 @@
+import { Box, Card, CardMedia, Container, Stack, Typography } from "@mui/material"
 import { IButton, IImage } from "../../../shared/types"
 import PrimaryButton from "../../elements/buttons/PrimaryButton"
 
@@ -10,38 +11,60 @@ export type IHeroCard = {
   type: "light" | "dark"
 }
 
-const getColor = {
-  dark: ["bg-gray-800", "text-primary-400", "text-white", "text-gray-300"],
-  light: ["bg-white", "text-primary-600", "text-black", "text-gray-600"],
-}
-
 const HeroCard = ({ ...card }: IHeroCard) => {
-  const buttonColor = card.button.color ? card.button.color : "primary"
+  const buttonColor = card.button?.color ? card.button.color : "primary"
+  const dark = card.type === "dark"
+
   return (
-    <div className={`relative text-center sm:text-left rounded-lg shadow-xl ${getColor[card.type][0]}`}>
-      <div className="h-56 sm:h-72 md:absolute md:left-0 md:h-full md:w-1/2">
-        <img className="w-full h-full object-cover rounded-t-lg md:rounded-l-lg md:rounded-r-none" src={card.image.src} alt={card.image.alt || ""} />
-      </div>
-      <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="md:ml-auto md:w-1/2 md:pl-10">
-          <h2 className={`text-base font-semibold uppercase tracking-wider ${getColor[card.type][1]}`}>{card.subtitle}</h2>
-          <p className={`mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl ${getColor[card.type][2]}`}>{card.title}</p>
-          {card.paragraph && <p className={`mt-3 text-lg ${getColor[card.type][3]}`}>{card.paragraph}</p>}
-          <div className="mt-2 md:mt-8 text-center sm:text-left">
+    <Card
+      sx={{
+        overflow: "hidden",
+        bgcolor: dark ? "grey.900" : "background.paper",
+        color: dark ? "common.white" : "text.primary",
+        boxShadow: 8,
+      }}
+    >
+      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" } }}>
+        <CardMedia
+          component="img"
+          image={card.image.src}
+          alt={card.image.alt || card.title}
+          sx={{ minHeight: { xs: 224, sm: 288, md: "100%" }, objectFit: "cover" }}
+        />
+        <Container maxWidth={false} sx={{ py: { xs: 4, md: 6, lg: 8 }, px: { xs: 3, sm: 4, lg: 6 } }}>
+          <Stack spacing={2} justifyContent="center" sx={{ height: "100%", textAlign: { xs: "center", sm: "left" } }}>
+            {card.subtitle && (
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: dark ? "primary.light" : "primary.main" }}
+              >
+                {card.subtitle}
+              </Typography>
+            )}
+            <Typography variant="h3" sx={{ fontWeight: 800, fontSize: { xs: "2rem", sm: "2.5rem" } }}>
+              {card.title}
+            </Typography>
+          {card.paragraph && (
+            <Typography sx={{ fontSize: "1.125rem", color: dark ? "grey.300" : "text.secondary" }}>
+              {card.paragraph}
+            </Typography>
+          )}
+          {card.button && (
             <PrimaryButton
-              type={card.type === "light" ? "dark" : "light"}
+              type={dark ? "light" : "dark"}
               color={buttonColor}
-              link={card.button.link}
+              link={card.button.link!}
               size="lg"
               disabled={!!card.button.disabled}
-              className="mt-5 font-bold md:mt-0"
+              sx={{ alignSelf: { xs: "center", sm: "flex-start" }, mt: 1 }}
             >
               {card.button.text}
             </PrimaryButton>
-          </div>
-        </div>
-      </div>
-    </div>
+          )}
+          </Stack>
+        </Container>
+      </Box>
+    </Card>
   )
 }
 

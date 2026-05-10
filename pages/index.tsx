@@ -1,4 +1,6 @@
 import Head from "next/head"
+import { Box, Card, CardContent, NoSsr, Typography } from "@mui/material"
+import Masonry from "@mui/lab/Masonry"
 import Layout from "../components/layouts/Layout"
 import SectionHeader from "../components/elements/headers/SectionHeader"
 import HeroCard, {IHeroCard} from "../components/modules/cards/HeroCard"
@@ -7,269 +9,176 @@ import ContactCard, { IContactCard } from "../components/modules/cards/ContactCa
 import MiniCard, { IMiniCard } from "../components/modules/cards/MiniCard"
 import ImageCard, { IImageCard } from "../components/modules/cards/ImageCard"
 import {
-    announcementConcatenator,
     filterAndSortAnnouncements,
     generateAnnouncementKey,
 } from "../shared/utils/announcement.util"
-import React, { useState, useEffect } from 'react'
-import {convertAnnouncements, getAllAnnouncements, getAnnouncements} from "../shared/services/announcement.service";
+import React, { useMemo } from 'react'
+import {convertAnnouncements, getAllAnnouncements} from "../shared/services/announcement.service";
 import {filterById, filterByType, setHttpHeaders} from "../shared/utils/api.util";
-import {useWindowSize} from '../shared/utils/general.util'
 import {
     convertBannerCards,
     convertFaceCards, convertHeroCard, convertImageCards,
     convertMiniCards,
-    dataCardsRequest,
-    templeChallengeRequest,
-    templeDataHandler
+    getDataCards,
 } from "../shared/services/data-card.service";
 import BannerCard, {IBannerCard} from "../components/modules/cards/BannerCard";
-import { useAddToHomescreenPrompt } from "../components/modules/add-to-homescreen/AddToHomescreen";
 import {config} from "../config";
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
-import TempleChart from "../components/charts/TempleChart"
 import Icon from "../components/elements/icons/Icon"
 
-export const getServerSideProps = async ({ req, res }) => {
+export const getServerSideProps = async ({ res }) => {
   setHttpHeaders(res)
-  const [announcements, dataCards, templeData] = await Promise.all([fetch(getAllAnnouncements()), fetch(dataCardsRequest()), fetch(templeChallengeRequest())])
-  // console.log('templeResult', await templeData)
-  const templeText = await templeData.text();
-  const from = templeText.indexOf("{");
-  const to   = templeText.lastIndexOf("}")+1; 
-  const jsonText = templeText.slice(from, to);
-  let templeFinal = templeDataHandler(JSON.parse(jsonText))
+  const [announcements, dataCards] = await Promise.all([getAllAnnouncements(), getDataCards()])
   return {
     props: {
-      announcements: await announcements.json(),
-      dataCards: (await dataCards.json()).sort((a, b) => a.order - b.order),
-      temple: templeFinal
+      announcements,
+      dataCards: dataCards.sort((a, b) => a.order - b.order),
     },
   }
 }
 
-function Home({announcements, dataCards, temple}) {
-  const [eldersAnnouncements, setEldersAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "elders")))
-  const [reliefSocietyAnnouncements, setReliefSocietyAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "relief-society")))
-  const [youngWomenAnnouncements, setYoungWomenAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "young-women")))
-  const [primaryAnnouncements, setPrimaryAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "primary")))
-  const [generalAnnouncements, setGeneralAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "general")))
-  const [youngMenAnnouncements, setYoungMenAnnouncements] = useState<IAnnouncement[]|undefined>(convertAnnouncements(announcements.filter((item) => item.type === "young-men")))
+function Home({announcements, dataCards}) {
   const dataBannerCards: IBannerCard[] = convertBannerCards(filterByType(dataCards, "banner-card"))
   const dataFaceCards: IContactCard[] = convertFaceCards(filterByType(dataCards, "face-card"))
   const dataMiniCards: IMiniCard[] = convertMiniCards(filterByType(dataCards, "mini-card"))
   const dataImageCards: IImageCard[] = convertImageCards(filterByType(dataCards, "image-card"))
   const dataMissionaryCards: IImageCard[] = convertImageCards(filterByType(dataCards, "missionary-card"))
   const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
-  const [isAppInstalled, setIsAppInstalled] = useState(false);
-  const [prompt, promptToInstall] = useAddToHomescreenPrompt();
-  const size = useWindowSize();
+  const announcementSections = useMemo(
+    () => [
+      { title: "", items: convertAnnouncements(announcements.filter((item) => item.type === "general")) },
+      { title: "Relief Society", items: convertAnnouncements(announcements.filter((item) => item.type === "relief-society")) },
+      { title: "Elders", items: convertAnnouncements(announcements.filter((item) => item.type === "elders")) },
+      { title: "Young Women", items: convertAnnouncements(announcements.filter((item) => item.type === "young-women")) },
+      { title: "Young Men", items: convertAnnouncements(announcements.filter((item) => item.type === "young-men")) },
+      { title: "Primary", items: convertAnnouncements(announcements.filter((item) => item.type === "primary")) },
+    ],
+    [announcements]
+  )
+  const visibleAnnouncementSections = announcementSections.filter((section) => section.items.length > 0)
 
   dataMissionaryCards.forEach(card => card.scale = true);
-
-  const isPWAInstalled = async () => {
-    if ("getInstalledRelatedApps" in window.navigator) {
-      const relatedApps = await navigator.getInstalledRelatedApps();
-      let installed = false;
-      relatedApps.forEach((app) => {
-        //if your PWA exists in the array it is installed
-        console.log(app.platform, app.url);
-        if (
-          app.url === "https://4thward.sycamoresstake.com/manifest.json" || app.url === "http://192.168.1.65:3000/manifest.json"
-        ) {
-          installed = true;
-        }
-      });
-      setIsAppInstalled(installed);
-    }
-  };
-
-  useEffect(() => {
-    isPWAInstalled();
-  }, [])
 
   return (
     <Layout>
       <Head>
         <title>Sycamores 4th Ward</title>
       </Head>
-      <PrimaryButton type="link" className="absolute top-2 md:top-5" link={{ url: "https://www.sycamoresstake.com/" }}>
-        <Icon name="chevron-left" className="h-5 w-5" />
-        <span className="mr-2 text-sm uppercase font-semibold">Back to Stake Site</span>
-      </PrimaryButton>
-      <div className="pt-16">
+      <Box sx={{ position: "absolute", top: { xs: 8, md: 20 } }}>
+        <PrimaryButton type="link" link={{ url: "https://www.sycamoresstake.com/" }}>
+          <Icon name="chevron-left" className="h-5 w-5" />
+          <span>Back to Stake Site</span>
+        </PrimaryButton>
+      </Box>
+      <Box sx={{ pt: 8 }}>
         <HeroCard {...dataSundayMeeting} />
-      </div>
-      {/* <div className="flex justify-center items-center mt-4">
-        {!isAppInstalled ? (
-            <button onClick={promptToInstall} className="bg-primary-500 hover:bg-primary-700 text-white py-2 px-4 rounded-lg">Add to Home Screen</button>
-          ) : (
-            <div className="text-gray-700">Thanks for installing our app</div>
-          )}
-      </div> */}
-      <div className="relative mb-7">
-          <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." className="pt-10"/>
-      </div>
+      </Box>
+      <Box sx={{ mb: 4 }}>
+        <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." sx={{ pt: 5 }} />
+      </Box>
       {dataBannerCards.length > 0 && (
-        <div className="lg:grid gap-x-4 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:items-start">
-          {dataBannerCards.map((card: IBannerCard) => (
-            <div key={card.title} className="w-full mb-4">
-              <BannerCard {...card} />
-            </div>
-          ))}
-        {/* <TempleChart templeData={temple}/> */}
-        </div>
+        <>
+          <Box sx={{ display: { xs: "grid", lg: "none" }, gap: 2 }}>
+            {dataBannerCards.map((card: IBannerCard) => (
+              <BannerCard key={card.title} {...card} />
+            ))}
+          </Box>
+          <NoSsr fallback={null}>
+            <Box sx={{ display: { xs: "none", lg: "block" } }}>
+              <Masonry columns={2} spacing={2} sx={{ m: 0 }}>
+                {dataBannerCards.map((card: IBannerCard) => (
+                  <BannerCard key={card.title} {...card} />
+                ))}
+              </Masonry>
+            </Box>
+          </NoSsr>
+        </>
       )}
-      {generalAnnouncements.length < 1 && youngMenAnnouncements.length < 1  && reliefSocietyAnnouncements.length < 1  &&
-       eldersAnnouncements.length < 1  && youngWomenAnnouncements.length < 1  && primaryAnnouncements.length < 1  &&
-        <p className="text-lg text-gray-500 mt-7 text-center">No Announcements</p>
+      {visibleAnnouncementSections.length < 1 &&
+        <Typography sx={{ mt: 4, textAlign: "center", fontSize: "1.125rem", color: "text.secondary" }}>No Announcements</Typography>
       }
-      {generalAnnouncements.length > 0 &&
-        <>
-          <div className="mt-7">
-            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
-              <div className="grid gap-4 lg:grid-cols-2">
-                {filterAndSortAnnouncements(generalAnnouncements).map((announcement: IAnnouncement) => (
-                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
-                    <Announcement {...announcement} />
-                  </div>
+      {visibleAnnouncementSections.map((section) => (
+        <Box key={section.title || "general"} sx={{ mt: 4 }}>
+          {section.title && (
+            <Typography sx={{ mb: 3, textAlign: "center", fontSize: "1.125rem", color: "text.secondary" }}>
+              {section.title}
+            </Typography>
+          )}
+          <Box sx={{ display: { xs: "grid", lg: "none" }, gap: 2 }}>
+            {filterAndSortAnnouncements(section.items).map((announcement: IAnnouncement) => (
+              <Card key={generateAnnouncementKey(announcement)} sx={{ boxShadow: 6 }}>
+                <CardContent sx={{ p: { xs: 3, lg: 4 }, bgcolor: "background.paper" }}>
+                  <Announcement {...announcement} />
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+          <NoSsr fallback={null}>
+            <Box sx={{ display: { xs: "none", lg: "block" } }}>
+                <Masonry columns={2} spacing={2} sx={{ m: 0 }}>
+                  {filterAndSortAnnouncements(section.items).map((announcement: IAnnouncement) => (
+                    <Card key={generateAnnouncementKey(announcement)} sx={{ boxShadow: 6 }}>
+                      <CardContent sx={{ p: { xs: 3, lg: 4 }, bgcolor: "background.paper" }}>
+                        <Announcement {...announcement} />
+                      </CardContent>
+                    </Card>
                 ))}
-              </div>
-            </div>
-          </div>
-        </>
-      }
-      {reliefSocietyAnnouncements.length > 0 &&
-        <>
-          <p className="text-lg text-gray-500 mt-7 text-center">Relief Society</p>
-          <div className="mt-7">
-            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
-              <div className="grid gap-4 lg:grid-cols-2">
-                {filterAndSortAnnouncements(reliefSocietyAnnouncements).map((announcement: IAnnouncement) => (
-                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
-                    <Announcement {...announcement} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      }
-      {eldersAnnouncements.length > 0 &&
-        <>
-          <p className="text-lg text-gray-500 mt-7 text-center">Elders</p>
-          <div className="mt-7">
-            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
-              <div className="grid gap-4 lg:grid-cols-2">
-                {filterAndSortAnnouncements(eldersAnnouncements).map((announcement: IAnnouncement) => (
-                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
-                    <Announcement {...announcement} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      }
-      {youngWomenAnnouncements.length > 0 &&
-        <>
-          <p className="text-lg text-gray-500 mt-7 text-center">Young Women</p>
-          <div className="mt-7">
-            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
-              <div className="grid gap-4 lg:grid-cols-2">
-                {filterAndSortAnnouncements(youngWomenAnnouncements).map((announcement: IAnnouncement) => (
-                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
-                    <Announcement {...announcement} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      }
-      {youngMenAnnouncements.length > 0 &&
-        <>
-          <p className="text-lg text-gray-500 mt-7 text-center">Young Men</p>
-          <div className="mt-7">
-            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
-              <div className="grid gap-4 lg:grid-cols-2">
-                {filterAndSortAnnouncements(youngMenAnnouncements).map((announcement: IAnnouncement) => (
-                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
-                    <Announcement {...announcement} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      }
-      {primaryAnnouncements.length > 0 &&
-        <>
-          <p className="text-lg text-gray-500 mt-7 text-center">Primary</p>
-          <div className="mt-7">
-            <div className="relative max-w-xl mx-auto lg:max-w-7xl">
-              <div className="grid gap-4 lg:grid-cols-2">
-                {filterAndSortAnnouncements(primaryAnnouncements).map((announcement: IAnnouncement) => (
-                  <div key={generateAnnouncementKey(announcement)} className="p-4 bg-white rounded-lg shadow-xl lg:p-8">
-                    <Announcement {...announcement} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </>
-      }
+              </Masonry>
+            </Box>
+          </NoSsr>
+        </Box>
+      ))}
       {dataFaceCards.filter((card) => !card.hidden).length > 0 && (
         <>
-          <SectionHeader title="Meet with a member of the bishopric" subtitle="Select a time and quickly schedule your appointment." className="pt-10 sm:pt-14 lg:pt-20"/>
-          <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+          <SectionHeader title="Meet with a member of the bishopric" subtitle="Select a time and quickly schedule your appointment." sx={{ pt: 5 }}/>
+          <Box sx={{ display: "grid", gap: 3, gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))" } }}>
             {dataFaceCards
               .filter((card) => !card.hidden)
               .map((card: IContactCard) => (
-                <div key={card.title} className="py-3 w-full">
-                  <ContactCard {...Object.assign(card, { className: "col-span-1" })} />
-                </div>
+                <Box key={card.title}>
+                  <ContactCard {...card} />
+                </Box>
               ))}
-          </div>
+          </Box>
         </>
       )}
       {dataMiniCards.filter((card) => !card.hidden).length > 0 && (
-        <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
+        <Box sx={{ display: "grid", gap: 3, gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" } }}>
           {dataMiniCards
             .filter((card) => !card.hidden)
             .map((card: IMiniCard) => (
-              <div key={card.title} className="py-3 w-full">
+              <Box key={card.title}>
                 <MiniCard {...card} />
-              </div>
+              </Box>
             ))}
-        </div>
+        </Box>
       )}
       {dataMissionaryCards.filter((card) => !card.hidden).length > 0 && (
         <>
-          <SectionHeader title="Missionaries Serving" subtitle="Take some time to write our missionaries." className="pt-10 sm:pt-14 lg:pt-20"/>
-          <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 pt-5">
+          <SectionHeader title="Missionaries Serving" subtitle="Take some time to write our missionaries." sx={{ pt: 5 }}/>
+          <Box sx={{ display: "grid", gap: 3, pt: 3, gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" } }}>
             {dataMissionaryCards
               .filter((card) => !card.hidden)
               .map((card: IImageCard) => (
-                <div key={card.title} className="py-3 w-full">
+                <Box key={card.title}>
                   <ImageCard {...card} />
-                </div>
+                </Box>
               ))}
-          </div>
+          </Box>
         </>
       )}
       {dataImageCards.filter((card) => !card.hidden).length > 0 && (
         <>
-          <SectionHeader title="Learn what's going on" subtitle="Below are some of the happenings of the ward and ways to become involved." className="pt-10 sm:pt-14 lg:pt-20"/>
-          <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 pt-5">
+          <SectionHeader title="Learn what's going on" subtitle="Below are some of the happenings of the ward and ways to become involved." sx={{ pt: 5 }}/>
+          <Box sx={{ display: "grid", gap: 3, pt: 3, gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" } }}>
             {dataImageCards
               .filter((card) => !card.hidden)
               .map((card: IImageCard) => (
-                <div key={card.title} className="py-3 w-full">
+                <Box key={card.title}>
                   <ImageCard {...card} />
-                </div>
+                </Box>
               ))}
-          </div>
+          </Box>
         </>
       )}
     </Layout>
@@ -277,5 +186,3 @@ function Home({announcements, dataCards, temple}) {
 }
 
 export default Home
-
-

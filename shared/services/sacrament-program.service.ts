@@ -1,8 +1,5 @@
-import { config } from "../../config"
+import { fetchWardJson, getWardPath } from "./api-client"
 
-const { apiUrl, apiWard, apiHeaders } = config
-
-/**
- * REQUESTS
- */
-export const sacramentProgramRequest = () => new Request(`${apiUrl}/agenda/${apiWard}`, apiHeaders)
+export const getSacramentProgram = async <T>() => {
+  return fetchWardJson<T>(getWardPath("agenda"))
+}

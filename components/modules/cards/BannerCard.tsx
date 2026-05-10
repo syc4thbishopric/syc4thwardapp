@@ -1,13 +1,15 @@
+import { Box, Button, Card, CardContent, Divider, Link, Stack, Typography } from "@mui/material"
+import { useState } from "react"
 import Linkify from "linkify-react"
-import { IButton } from "../../../shared/types"
+import { IButton, IImage } from "../../../shared/types"
 import PrimaryButton from "../../elements/buttons/PrimaryButton"
-import Icon from "../../elements/icons/Icon"
 
 export type IBannerCard = {
   title: string
   subtitle: string
   paragraph?: string
   button?: IButton
+  image?: IImage
   hidden?: boolean
 }
 
@@ -16,8 +18,8 @@ const options = {
   className: "text-blue-700 hover:text-blue-500",
   defaultProtocol: "http",
   events: null,
-  format: (value, type) => value,
-  formatHref: (href, type) => href,
+  format: (value) => value,
+  formatHref: (href) => href,
   ignoreTags: [],
   nl2br: false,
   rel: null,
@@ -27,31 +29,106 @@ const options = {
   validate: true,
 }
 
-const BannerCard = ({ ...card }: any) => {
+const BannerCard = ({ ...card }: IBannerCard) => {
+  const [expanded, setExpanded] = useState(false)
+  const imageUrl =
+    card.image?.alt === "image-view"
+      ? card.image.src
+      : !Array.isArray(card.button?.link) && card.button?.link?.label?.text === "image-view"
+        ? card.button.link.url
+        : null
+  const buttonLink =
+    !imageUrl && !Array.isArray(card.button?.link) && card.button?.link?.label?.text !== "image-view"
+      ? card.button.link
+      : null
+  const shouldClampDescription = !!card.paragraph && card.paragraph.length > 240
+
   return (
-    <div className="bg-white shadow-xl rounded-lg border-2">
-      <div className="px-4 py-5 sm:p-6">
-        <div className="sm:flex sm:items-start sm:justify-between">
-          <div>
-            <h3 className="text-base font-semibold leading-6 text-gray-900">{card.title}</h3>
-            <div className="text-sm text-primary">{card.subtitle}</div>
-            <Linkify tagName="p" options={options} className="bg-white mt-2 text-sm text-gray-500 rounded-xl">{card.paragraph && <p>{card.paragraph}</p>}</Linkify>
-          </div>
-          {card.button.text && card.button.link.label?.text !== 'image-view' && (
-            <div className="mt-5 sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:flex sm:items-center">
-            <PrimaryButton size="sm" type="dark" color="primary" link={card.button.link}>
-              {card.button.text}
-            </PrimaryButton>
-          </div>
+    <Card sx={{ boxShadow: 6 }}>
+      <CardContent sx={{ p: { xs: 3, lg: 4 }, bgcolor: "background.paper" }}>
+        <Stack spacing={2}>
+          <Box>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 700,
+                color: "text.primary",
+                fontSize: "1.05rem",
+                lineHeight: 1.35,
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {card.title}
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 0.5, color: "primary.main", fontWeight: 700 }}>
+              {card.subtitle}
+            </Typography>
+            {card.paragraph && (
+              <Box sx={{ mt: 2 }}>
+                <Linkify
+                  tagName="div"
+                  options={{
+                    ...options,
+                    render: ({ attributes, content }) => (
+                      <Link {...attributes} href={attributes.href} target="_blank" rel="noreferrer" underline="hover">
+                        {content}
+                      </Link>
+                    ),
+                  }}
+                >
+                  <Typography
+                    color="text.secondary"
+                    sx={{
+                      fontSize: "0.95rem",
+                      lineHeight: 1.65,
+                      whiteSpace: "pre-wrap",
+                      display: shouldClampDescription && !expanded ? "-webkit-box" : "block",
+                      WebkitLineClamp: shouldClampDescription && !expanded ? 5 : "unset",
+                      WebkitBoxOrient: shouldClampDescription && !expanded ? "vertical" : "unset",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {card.paragraph}
+                  </Typography>
+                </Linkify>
+                {shouldClampDescription && (
+                  <Button
+                    size="small"
+                    variant="text"
+                    onClick={() => setExpanded((value) => !value)}
+                    sx={{ mt: 1, px: 0, minWidth: 0, fontWeight: 700, alignSelf: "flex-start" }}
+                  >
+                    {expanded ? "Show less" : "Read more"}
+                  </Button>
+                )}
+              </Box>
+            )}
+          </Box>
+          {imageUrl && (
+            <>
+              <Divider />
+              <Box
+                component="img"
+                src={imageUrl}
+                alt={card.image?.alt && card.image.alt !== "image-view" ? card.image.alt : card.title}
+                sx={{ width: "100%", borderRadius: 3, objectFit: "cover" }}
+              />
+            </>
           )}
-        </div>
-        {card.button.link.label?.text === 'image-view' && (
-          <img className="mt-5 w-full object-cover" src={card.button.link.url} />
-        )}
-      </div>
-    </div>
+          {card.button?.text && buttonLink && (
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <PrimaryButton size="sm" type="dark" color="primary" link={buttonLink}>
+                {card.button.text}
+              </PrimaryButton>
+            </Box>
+          )}
+        </Stack>
+      </CardContent>
+    </Card>
   )
 }
 
 export default BannerCard
-

@@ -1,3 +1,4 @@
+import { Box, Chip } from "@mui/material"
 import ImageCard from "../cards/ImageCard"
 import MiniCard from "../cards/MiniCard"
 import Divider from "../../elements/dividers/Divider"
@@ -31,10 +32,10 @@ export type IScheduleEvent = {
 }
 
 const getColorStyle = {
-  primary: "bg-primary-100 text-primary-800",
-  blue: "bg-blue-100 text-blue-800",
-  red: "bg-red-100 text-red-800",
-  green: "bg-green-100 text-green-800",
+  primary: { bgcolor: "primary.light", color: "primary.dark" },
+  blue: { bgcolor: "#DBEAFE", color: "#1D4ED8" },
+  red: { bgcolor: "#FEE2E2", color: "#B91C1C" },
+  green: { bgcolor: "#DCFCE7", color: "#15803D" },
 }
 
 const Schedule = ({ date, times }: ISchedule) => {
@@ -42,17 +43,16 @@ const Schedule = ({ date, times }: ISchedule) => {
     <>
       <SectionHeader title={date.dateFormatted} />
       {times.map((time) => (
-        <div key={time.time}>
-          <Divider className="mt-8 md:mt-12 lg:mt-14" />
-          <div className="pt-8">
-            <div className={`inline-flex items-center px-8 py-1 rounded-full text-lg font-semibold ${getColorStyle[time.color]}`}>{time.time}</div>
-            <div className={`grid grid-cols-1 gap-x-6 sm:grid-cols-2 pt-5`}>
+        <Box key={time.time}>
+          <Divider sx={{ mt: 4 }} />
+          <Box sx={{ pt: 4 }}>
+            <Chip label={time.time} sx={{ px: 2, py: 2.5, fontSize: "1.125rem", fontWeight: 700, ...getColorStyle[time.color] }} />
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))" }, gap: 3, pt: 3 }}>
               {time.events
                 .filter((event) => (event.repeats ? event.repeats.includes(date.weekOfTheMonth) : event))
                 .map((event) =>
                   event.image ? (
-                    <>
-                      <div key={event.title} className="py-3 w-full">
+                      <Box key={event.title}>
                         <ImageCard
                           title={event.title}
                           subtitle={event.subtitle}
@@ -60,22 +60,21 @@ const Schedule = ({ date, times }: ISchedule) => {
                           image={event.image}
                           button={event.button ? { ...event.button, color: time.color } : null}
                         />
-                      </div>
-                    </>
+                      </Box>
                   ) : (
-                    <div key={event.title} className="py-3 w-full">
+                    <Box key={event.title}>
                       <MiniCard
                         title={event.title}
                         subtitle={event.subtitle}
                         paragraph={event.description}
                         button={event.button ? { ...event.button, color: time.color } : null}
                       />
-                    </div>
+                    </Box>
                   )
                 )}
-            </div>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
       ))}
     </>
   )

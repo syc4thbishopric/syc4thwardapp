@@ -1,16 +1,19 @@
+import { Button } from "@mui/material"
 import { openPopupWidget } from "react-calendly"
 import { Props } from "react-calendly/typings/components/PopupWidget/PopupWidget"
 
-const CalendlyButton = ({ children, styles, url, disabled }) => {
+type CalendlyButtonProps = {
+  children: React.ReactNode
+  buttonProps: any
+  url: string
+  disabled?: boolean
+}
+
+const CalendlyButton = ({ children, buttonProps, url, disabled }: CalendlyButtonProps) => {
   return (
-    <button
-      disabled={disabled}
-      type="button"
-      className={`${styles} ${disabled ? "disabled:opacity-50" : ""}`}
-      onClick={() => openPopupWidget({ url, pageSettings: {} } as Props)}
-    >
+    <Button {...buttonProps} disabled={disabled} onClick={() => openPopupWidget({ url, pageSettings: {} } as Props)}>
       {children}
-    </button>
+    </Button>
   )
 }
 export default CalendlyButton

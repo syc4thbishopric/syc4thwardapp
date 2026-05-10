@@ -1,20 +1,26 @@
+import { Box, Divider as MuiDivider, type SxProps, type Theme, Typography } from "@mui/material"
+
 export type IDivider = {
   text?: string
-  className?: string
+  sx?: SxProps<Theme>
 }
 
-const Divider = ({ text, className = "" }: IDivider) => {
+const Divider = ({ text, sx }: IDivider) => {
   return (
-    <div className={`${className} relative`}>
-      <div className="absolute inset-0 flex items-center" aria-hidden="true">
-        <div className="w-full border-t border-gray-300"></div>
-      </div>
+    <Box sx={{ position: "relative", py: text ? 1 : 0, ...sx }}>
+      <MuiDivider />
       {text && (
-        <div className="relative flex justify-center">
-          <span className="px-2 bg-gray-100 text-sm text-gray-500">{text}</span>
-        </div>
+        <Box sx={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+          <Typography
+            component="span"
+            variant="body2"
+            sx={{ px: 1.5, bgcolor: "background.default", color: "text.secondary" }}
+          >
+            {text}
+          </Typography>
+        </Box>
       )}
-    </div>
+    </Box>
   )
 }
 export default Divider

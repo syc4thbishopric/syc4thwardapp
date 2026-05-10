@@ -1,5 +1,6 @@
+import { Box, Card, CardContent, Stack } from "@mui/material"
 import ProgramItem, { IProgramItem } from "./program-item"
-import ProgramDivider, { IProgramDivider } from "./program-divider"
+import ProgramDivider from "./program-divider"
 
 export type IProgram = {
   date: string
@@ -16,41 +17,40 @@ export type IProgram = {
 }
 
 const SacramentProgram = ({...program}: IProgram) => {
-  const dividerFont = "text-sm text-gray-500 font-light uppercase italic"
   return (
-    <>
-      <div className="w-full md:w-4/5 mx-auto bg-white px-5 py-8 md:px-16 md:py-20 mt-8 md:mt-12 lg:mt-14 rounded-lg text-sm sm:text-base">
-        <div className="flex flex-col gap-4">
+      <Card sx={{ width: "100%", maxWidth: { md: "80%" }, mx: "auto", mt: { xs: 4, md: 6, lg: 7 }, boxShadow: 6 }}>
+        <CardContent sx={{ px: { xs: 3, md: 8 }, py: { xs: 4, md: 10 }, fontSize: { xs: "0.875rem", sm: "1rem" } }}>
+        <Stack spacing={2}>
           <ProgramItem {...program.presiding} />
           <ProgramItem {...program.conducting} />
           <ProgramItem {...program.chorister} />
           <ProgramItem {...program.organist} />
           <ProgramItem {...program.openingHymn} />
           <ProgramItem {...program.openingPrayer} />
-        </div>
+        </Stack>
 
-        <ProgramDivider text="Ward Business" className="mt-8" fontClass={dividerFont} borderClass="border-gray-400" />
+        <ProgramDivider text="Ward Business" sx={{ pt: 5, pb: 1 }} />
 
-        <div className="flex flex-col gap-4 pt-8">
+        <Stack spacing={2} sx={{ pt: 4 }}>
           <ProgramItem {...program.sacramentHymn} />
-        </div>
+        </Stack>
 
-        <ProgramDivider text="Administration of the Sacrament" className="mt-8 mb-4" fontClass={dividerFont} borderClass="border-gray-400" />
+        <ProgramDivider text="Administration of the Sacrament" sx={{ pt: 4, pb: 1 }} />
 
         {program.programContents
           .sort((a, b) => a.order - b.order)
           .map((item) => (
-            <div key={item.order} className="flex flex-col gap-4 pt-4">
-              <ProgramItem key={item.title.concat(item.name)} {...item}/>
-            </div>
+            <Box key={item.order} sx={{ pt: 2 }}>
+              <ProgramItem key={item.title.concat(item.name || "")} {...item}/>
+            </Box>
           ))}
 
-        <div className="flex flex-col gap-4 pt-4">
+        <Stack spacing={2} sx={{ pt: 2 }}>
           <ProgramItem {...program.closingHymn} />
           <ProgramItem {...program.closingPrayer} />
-        </div>
-        </div>
-    </>
+        </Stack>
+        </CardContent>
+      </Card>
   )
 }
 

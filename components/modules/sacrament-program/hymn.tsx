@@ -1,3 +1,4 @@
+import { Link } from "@mui/material"
 import { useEffect, useState } from "react"
 
 import { getHymnByNumber, getChildHymnByNumber } from "../../../shared/services/hymn.service"
@@ -13,22 +14,22 @@ const Hymn: React.FC<Props> = ({ type, number, name }) => {
 
   useEffect(() => {
     async function loadHymn() {
-      let href = "";
+      let hymnHref = ""
       if (type == "children") {
-        href = await getChildHymnByNumber(number)
-        setHref(href)
+        hymnHref = await getChildHymnByNumber(number)
+        setHref(hymnHref)
       } else if (type == "regular") {
-        href = await getHymnByNumber(number)
-        setHref(href)
+        hymnHref = await getHymnByNumber(number)
+        setHref(hymnHref)
       }
     }
     loadHymn()
-  }, [number])
+  }, [number, type])
 
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-700">
+    <Link href={href || undefined} target="_blank" rel="noopener noreferrer" underline="hover" color="info.main">
       {name}
-    </a>
+    </Link>
   )
 }
 

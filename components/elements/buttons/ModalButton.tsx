@@ -1,17 +1,25 @@
 import { useState } from "react"
+import { Button } from "@mui/material"
 import { hideBodyScroll } from "../../../shared/utils/document.util"
 import ModalWrapper from "../../modules/modals/ModalWrapper"
 import ModalEvent from "../../modules/modals/ModalEvent/ModalEvent"
 // import ModalEventAction from "../../modules/modals/ModalEvent/ModalEventAction/ModalEventAction"
 
-const ModalButton = ({ children, styles, disabled, modal }) => {
+type ModalButtonProps = {
+  children: React.ReactNode
+  buttonProps: any
+  disabled?: boolean
+  modal: any
+}
+
+const ModalButton = ({ children, buttonProps, disabled, modal }: ModalButtonProps) => {
   const [showModal, setShowModal] = useState(false)
   const Modal = () => {
     const wrapperProps = { id: modal.title, showModal: showModal, setShowModal: setShowModal }
     switch (modal.type) {
       case "event":
         return (
-          <ModalWrapper {...wrapperProps} closeOnClickOutside={true} className="w-full md:mt-10 lg:mt-20 sm:max-w-xl">
+          <ModalWrapper {...wrapperProps} closeOnClickOutside={true}>
             <ModalEvent {...modal} />
           </ModalWrapper>
         )
@@ -30,9 +38,9 @@ const ModalButton = ({ children, styles, disabled, modal }) => {
 
   return (
     <>
-      <button disabled={disabled} type="button" className={`${styles} ${disabled ? "disabled:opacity-50" : ""}`} onClick={toggleModal}>
+      <Button {...buttonProps} disabled={disabled} onClick={toggleModal}>
         {children}
-      </button>
+      </Button>
       <Modal />
     </>
   )

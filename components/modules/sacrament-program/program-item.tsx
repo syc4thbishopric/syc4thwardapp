@@ -1,3 +1,4 @@
+import { Box, Typography } from "@mui/material"
 import { parseHymnNumber } from "../../../shared/services/hymn.service"
 import Hymn from './hymn'
 
@@ -9,17 +10,38 @@ export type IProgramItem = {
 }
 
 const ProgramItem = ({...item}: IProgramItem) => {
-  let hymnNumber: number | null
-  let hymnType: string
-  if (item.title.includes('Hymn')) {
-    hymnNumber = parseHymnNumber(item.name)
-    item.name.startsWith("CS") ? hymnType = 'children' : hymnType = 'regular';
-  }
+  const isHymn = item.title.includes("Hymn") && !!item.name
+  const hymnNumber = isHymn ? parseHymnNumber(item.name) : null
+  const hymnType = isHymn && item.name?.startsWith("CS") ? "children" : "regular"
+
   return (
-    <div className="dots-in-between w-full">
-      <span className="font-bold bg-white pr-3">{item.title}</span>
-      <span className="text-right bg-white float-right pl-3">{hymnNumber ? <Hymn type={hymnType} number={hymnNumber} name={item.name} /> : item.name}</span>
-    </div>
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "auto minmax(1.5rem, 1fr) auto",
+        alignItems: "end",
+        columnGap: 1.5,
+        width: "100%",
+      }}
+    >
+      <Typography sx={{ fontWeight: 700 }}>{item.title}</Typography>
+      <Box
+        aria-hidden="true"
+        sx={{
+          alignSelf: "center",
+          height: 1,
+          mb: 0.5,
+          backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1.5px)",
+          backgroundPosition: "left center",
+          backgroundSize: "8px 1px",
+          backgroundRepeat: "repeat-x",
+          color: "text.disabled",
+        }}
+      />
+      <Typography sx={{ textAlign: "right", color: "text.primary" }}>
+        {hymnNumber ? <Hymn type={hymnType} number={hymnNumber} name={item.name!} /> : item.name}
+      </Typography>
+    </Box>
   )
 }
 

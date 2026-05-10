@@ -1,12 +1,9 @@
 import { IScheduleTime } from "../../components/modules/schedules/Schedule"
-import { config } from "../../config"
+import { fetchWardJson, getWardPath } from "./api-client"
 
-const { apiUrl, apiWard, apiHeaders } = config
-
-/**
- * REQUESTS
- */
-export const schedulesRequest = new Request(`${apiUrl}/schedule/${apiWard}`, apiHeaders)
+export const getSchedules = async () => {
+  return fetchWardJson<IScheduleResponse[]>(getWardPath("schedule"))
+}
 
 /**
  * CONVERTER - SCHEDULES

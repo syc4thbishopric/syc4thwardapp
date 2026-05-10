@@ -3,17 +3,20 @@ import { IContactCard } from "../../components/modules/cards/ContactCard"
 import { IHeroCard } from "../../components/modules/cards/HeroCard"
 import { IImageCard } from "../../components/modules/cards/ImageCard"
 import { IMiniCard } from "../../components/modules/cards/MiniCard"
-import { config } from "../../config"
-import { csvJSON } from "../utils/announcement.util"
+import { fetchText, fetchWardJson, getWardPath } from "./api-client"
 
-const { apiUrl, apiWard, apiHeaders } = config
+const templeChallengeUrl =
+  "https://docs.google.com/spreadsheets/d/1i1gIszkbu9hhtQU68tL5AXwDBNFieasHBM7zUvi3Fxw/gviz/tq?tqx=out:json&tq=SELECT%20A,B,C,D,E"
 
-/**
- * REQUESTS
- */
-export const dataCardsRequest = () => new Request(`${apiUrl}/datacard/${apiWard}`, apiHeaders)
+export const getDataCards = async () => {
+  return fetchWardJson<IDataCardResponse[]>(getWardPath("datacard"))
+}
 
-export const templeChallengeRequest = () => new Request('https://docs.google.com/spreadsheets/d/1i1gIszkbu9hhtQU68tL5AXwDBNFieasHBM7zUvi3Fxw/gviz/tq?tqx=out:json&tq=SELECT%20A,B,C,D,E')
+export const getTempleChallengeText = async () => {
+  return fetchText(templeChallengeUrl, {
+    headers: { "Content-Type": "text/plain" },
+  })
+}
 
 /**
  * CONVERTER - MINI CARDS
@@ -84,6 +87,14 @@ export const convertBannerCard = (faceCard: IDataCardResponse): IBannerCard => {
   // NOTE: banner card is the same as a mini-card (so we can grab the mini-card conversion and add the images)
   return {
     ...convertMiniCard(faceCard),
+    ...(faceCard?.images?.[0] && {
+      image: {
+        src: faceCard.images[0].src,
+        ...(faceCard.images[0].alt && { alt: faceCard.images[0].alt }),
+        ...(faceCard.images[0].width && { width: faceCard.images[0].width }),
+        ...(faceCard.images[0].height && { height: faceCard.images[0].height }),
+      },
+    }),
   }
 }
 export const convertBannerCards = (bannerCards: IDataCardResponse[]): IContactCard[] => {

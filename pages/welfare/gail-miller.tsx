@@ -1,3 +1,4 @@
+import { Box } from "@mui/material"
 import Head from "next/head"
 import Layout from "../../components/layouts/Layout"
 import PageHeader from "../../components/elements/headers/PageHeader"
@@ -21,60 +22,63 @@ function GailMiller() {
         subtitle="Maples 3rd Ward will have a number of opportunities to server at Gail Miller Homeless Resource Center this year."
       />
       <Layout>
-        <PrimaryButton type="link" className="absolute top-2 md:top-5" link={{ url: "/welfare" }}>
-          <Icon name="chevron-left" className="h-5 w-5" />
-          <span className="mr-2 text-sm uppercase font-semibold">Back To Welfare</span>
-        </PrimaryButton>
+        <Box sx={{ position: "absolute", top: { xs: 8, md: 20 } }}>
+          <PrimaryButton type="link" link={{ url: "/welfare" }}>
+            <Icon name="chevron-left" className="h-5 w-5" />
+            <span>Back To Welfare</span>
+          </PrimaryButton>
+        </Box>
         <SectionHeader title="Next Opportunity at Gail Miller Homeless Resource Center" />
-        <div className="pt-16">
+        <Box sx={{ pt: 8 }}>
           <HeroCard {...dataHeroCard} />
-        </div>
+        </Box>
         {dataInfoCards.filter((card) => !card.hidden).length > 0 && (
           <>
             <SectionHeader title="Upcoming Events" subtitle="There are two more opportunities to serve here this year." />
-            <div className="mt-3 grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2">
+            <Box sx={{ mt: 3, display: "grid", gap: 3, gridTemplateColumns: { xs: "1fr", md: "repeat(2, minmax(0, 1fr))" } }}>
               {dataInfoCards
                 .filter((card) => !card.hidden && isSameOrAfterToday(card.date))
                 .sort((a: any, b: any) => a.date - b.date)
                 .map((card: IEventCard) => (
                   <EventCard key={card.title} {...card} />
                 ))}
-            </div>
+            </Box>
           </>
         )}
         <SectionHeader title="Volunteer Info" subtitle="Reach out to Jason Hardman with any questions" />
-        <div className="pt-16">
-          <h2>Address:</h2>
-          <p>242 West Paramount Avenue</p>
-          <p>Salt Lake City, UT 84115</p>
-          <br></br>
-          <ul>
-            <li>- If you are experiencing COVID symptoms, please stay home.</li>
-            <li>- Because you&#39;ll be working around food, please make sure that you&#39;re showered and that your clothes are clean</li>
-            <li>- Please be sure to bring the following items:</li>
-            <ol>
-              <li>1) Close toed shoes and socks</li>
-              <li>2) A shirt with sleeves, no tank-tops</li>
-              <li>3) A hair tie for hair that is longer than five inches</li>
-              <li>4) A hat if you don&#39;t want to wear a hairnet</li>
-            </ol>
-            <li>- Hair nets, beard nets, aprons, and gloves will be provided upon arrival.</li>
-          </ul>
-          <br></br>
-          <h2>Where to Park?</h2>
-          <ul>
-            <li>- Press the call button at the gate to have a staff member open the gate</li>
-            <li>- Let them know that you are here to volunteer</li>
-            <li>- Once in the parking area, follow the road around the building and park in any open spot</li>
-          </ul>
-        </div>
-        <div className="pt-16">
+        <Box sx={{ pt: 8, display: "grid", gap: 3 }}>
+          <Box sx={{ display: "grid", gap: 1.5 }}>
+            <Box component="h2" sx={{ m: 0, fontSize: "1.25rem", fontWeight: 700, color: "text.primary" }}>Address</Box>
+            <Box component="p" sx={{ m: 0, color: "text.secondary" }}>242 West Paramount Avenue</Box>
+            <Box component="p" sx={{ m: 0, color: "text.secondary" }}>Salt Lake City, UT 84115</Box>
+          </Box>
+          <Box component="ul" sx={{ m: 0, pl: 3, display: "grid", gap: 1.25, color: "text.primary" }}>
+            <li>If you are experiencing COVID symptoms, please stay home.</li>
+            <li>Because you&apos;ll be working around food, please make sure that you&apos;re showered and that your clothes are clean.</li>
+            <li>Please be sure to bring close-toed shoes and socks.</li>
+            <li>Please wear a shirt with sleeves. No tank tops.</li>
+            <li>Bring a hair tie for hair that is longer than five inches.</li>
+            <li>Bring a hat if you don&apos;t want to wear a hairnet.</li>
+            <li>Hair nets, beard nets, aprons, and gloves will be provided upon arrival.</li>
+          </Box>
+          <Box sx={{ display: "grid", gap: 1.5 }}>
+            <Box component="h2" sx={{ m: 0, fontSize: "1.25rem", fontWeight: 700, color: "text.primary" }}>Where to Park</Box>
+            <Box component="ul" sx={{ m: 0, pl: 3, display: "grid", gap: 1.25, color: "text.primary" }}>
+              <li>Press the call button at the gate to have a staff member open the gate.</li>
+              <li>Let them know that you are here to volunteer.</li>
+              <li>Once in the parking area, follow the road around the building and park in any open spot.</li>
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ pt: 8 }}>
           <BlockQuote {...dataBlockQuote} />
-        </div>
-        <PrimaryButton type="link" className="mt-20" link={{ url: "/welfare" }}>
-          <Icon name="chevron-left" className="h-5 w-5" />
-          <span className="mr-2 text-sm uppercase font-semibold">Back To Welfare</span>
-        </PrimaryButton>
+        </Box>
+        <Box sx={{ mt: 8 }}>
+          <PrimaryButton type="link" link={{ url: "/welfare" }}>
+            <Icon name="chevron-left" className="h-5 w-5" />
+            <span>Back To Welfare</span>
+          </PrimaryButton>
+        </Box>
       </Layout>
     </>
   )

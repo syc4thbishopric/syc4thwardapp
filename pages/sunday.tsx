@@ -1,3 +1,4 @@
+import { Box } from "@mui/material"
 import Head from "next/head"
 import Layout from "../components/layouts/Layout"
 import PageHeader from "../components/elements/headers/PageHeader"
@@ -7,20 +8,19 @@ import { getScheduleDate, getNextSunday, isSameOrAfterToday } from "../shared/ut
 import { filterByType, setHttpHeaders } from "../shared/utils/api.util"
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
 import Icon from "../components/elements/icons/Icon"
-import { convertSchedules, schedulesRequest } from "../shared/services/schedule.service"
+import { convertSchedules, getSchedules } from "../shared/services/schedule.service"
 import { config } from "../config"
-import { convertImageCards, dataCardsRequest } from "../shared/services/data-card.service"
+import { convertImageCards, getDataCards } from "../shared/services/data-card.service"
 import ImageCard, { IImageCard } from "../components/modules/cards/ImageCard"
 import SectionHeader from "../components/elements/headers/SectionHeader"
 
-export const getServerSideProps = async ({ req, res }) => {
+export const getServerSideProps = async ({ res }) => {
   setHttpHeaders(res)
-  const dataCards = await fetch(dataCardsRequest())
-  const schedules = await fetch(schedulesRequest)
+  const [dataCards, schedules] = await Promise.all([getDataCards(), getSchedules()])
   return {
     props: {
-        schedules: await schedules.json(),
-        roll: (await dataCards.json()).sort((a, b) => a.order - b.order)
+        schedules,
+        roll: dataCards.sort((a, b) => a.order - b.order)
     },
   }
 }
@@ -43,29 +43,33 @@ function Sunday({ schedules, roll }) {
       </Head>
       <PageHeader title="Sunday Meetings" subtitle="Below is a list of scheduled events this upcoming Sunday" />
       <Layout>
-        <PrimaryButton type="link" className="absolute top-2 md:top-5" link={{ url: "/" }}>
-          <Icon name="chevron-left" className="h-5 w-5" />
-          <span className="mr-2 text-sm uppercase font-semibold">Back</span>
-        </PrimaryButton>
+        <Box sx={{ position: "absolute", top: { xs: 8, md: 20 } }}>
+          <PrimaryButton type="link" link={{ url: "/" }}>
+            <Icon name="chevron-left" className="h-5 w-5" />
+            <span>Back</span>
+          </PrimaryButton>
+        </Box>
         <Schedule {...schedule} />
         {dataRollCards.filter((card) => !card.hidden).length > 0 && (
           <>
             <SectionHeader title="Take Class Attendance" subtitle="Find your organization and select the appropriate class in the dropdown" />
-            <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 pt-5">
+            <Box sx={{ display: "grid", gap: 3, pt: 5, gridTemplateColumns: { xs: "1fr", sm: "repeat(2, minmax(0, 1fr))", lg: "repeat(3, minmax(0, 1fr))" } }}>
               {dataRollCards
                 .filter((card) => !card.hidden)
                 .map((card: IImageCard) => (
-                  <div key={card.title} className="py-3 w-full">
+                  <Box key={card.title}>
                     <ImageCard {...card} />
-                  </div>
+                  </Box>
                 ))}
-            </div>
+            </Box>
           </>
         )}
-        <PrimaryButton type="link" className="mt-20" link={{ url: "/" }}>
-          <Icon name="chevron-left" className="h-5 w-5" />
-          <span className="mr-2 text-sm uppercase font-semibold">Back</span>
-        </PrimaryButton>
+        <Box sx={{ mt: 8 }}>
+          <PrimaryButton type="link" link={{ url: "/" }}>
+            <Icon name="chevron-left" className="h-5 w-5" />
+            <span>Back</span>
+          </PrimaryButton>
+        </Box>
       </Layout>
     </>
   )

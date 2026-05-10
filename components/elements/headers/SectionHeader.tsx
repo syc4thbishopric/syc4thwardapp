@@ -1,19 +1,25 @@
+import { Box, type SxProps, type Theme, Typography } from "@mui/material"
+
 export type ISectionHeader = {
   title: string
   subtitle?: string
-  className?: string
+  sx?: SxProps<Theme>
 }
 
-const SectionHeader = ({ title, subtitle = "", className = "" }: ISectionHeader) => {
+const SectionHeader = ({ title, subtitle = "", sx }: ISectionHeader) => {
   return (
-    <div className={`${className} max-w-7xl mx-auto text-center`}>
-      <div className="space-y-8 sm:space-y-12">
-        <div className="space-y-2 sm:space-y-4">
-          <h2 className="text-xl font-extrabold tracking-tight sm:text-3xl md:text-4xl">{title}</h2>
-          {subtitle && <p className="text-lg text-gray-500">{subtitle}</p>}
-        </div>
-      </div>
-    </div>
+    <Box sx={{ maxWidth: "80rem", mx: "auto", textAlign: "center", ...sx }}>
+      <Box sx={{ display: "grid", gap: { xs: 1, sm: 2 } }}>
+        <Typography variant="h3" sx={{ fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" }, letterSpacing: "-0.02em" }}>
+          {title}
+        </Typography>
+        {subtitle && (
+          <Typography variant="body1" color="text.secondary" sx={{ fontSize: "1.125rem" }}>
+            {subtitle}
+          </Typography>
+        )}
+      </Box>
+    </Box>
   )
 }
 export default SectionHeader

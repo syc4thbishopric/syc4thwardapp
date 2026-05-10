@@ -1,3 +1,4 @@
+import { Box } from "@mui/material"
 import Head from "next/head"
 import Layout from "../../components/layouts/Layout"
 import PageHeader from "../../components/elements/headers/PageHeader"
@@ -16,21 +17,25 @@ function DeseretSoap() {
       </Head>
       <PageHeader title="Deseret Soap" subtitle="Maples 3rd Ward will have an opportunity to server at Deseret Soap this year." />
       <Layout>
-        <PrimaryButton type="link" className="absolute top-2 md:top-5" link={{ url: "/welfare" }}>
-          <Icon name="chevron-left" className="h-5 w-5" />
-          <span className="mr-2 text-sm uppercase font-semibold">Back To Welfare</span>
-        </PrimaryButton>
+        <Box sx={{ position: "absolute", top: { xs: 8, md: 20 } }}>
+          <PrimaryButton type="link" link={{ url: "/welfare" }}>
+            <Icon name="chevron-left" className="h-5 w-5" />
+            <span>Back To Welfare</span>
+          </PrimaryButton>
+        </Box>
         <SectionHeader title="Next Opportunity at Deseret Soap" />
-        <div className="pt-16">
+        <Box sx={{ pt: 8 }}>
           <HeroCard {...dataHeroCard} />
-        </div>
-        <div className="pt-16">
+        </Box>
+        <Box sx={{ pt: 8 }}>
           <BlockQuote {...dataBlockQuote} />
-        </div>
-        <PrimaryButton type="link" className="mt-20" link={{ url: "/welfare" }}>
-          <Icon name="chevron-left" className="h-5 w-5" />
-          <span className="mr-2 text-sm uppercase font-semibold">Back To Welfare</span>
-        </PrimaryButton>
+        </Box>
+        <Box sx={{ mt: 8 }}>
+          <PrimaryButton type="link" link={{ url: "/welfare" }}>
+            <Icon name="chevron-left" className="h-5 w-5" />
+            <span>Back To Welfare</span>
+          </PrimaryButton>
+        </Box>
       </Layout>
     </>
   )

@@ -1,12 +1,11 @@
 import {IAnnouncement} from "../../components/modules/announcements/Announcement";
-import axios from "axios";
 import moment from "moment";
 import {csvJSON} from "../utils/announcement.util";
-import { config } from "../../config"
+import { fetchText, fetchWardJson, getWardPath } from "./api-client";
 
-const { apiUrl, apiWard, apiHeaders } = config
-
-export const getAllAnnouncements = () => new Request(`${apiUrl}/announcement/${apiWard}`, apiHeaders)
+export const getAllAnnouncements = async () => {
+  return fetchWardJson<IAnnouncementResponse[]>(getWardPath("announcement"))
+}
 
 /**
  * CONVERTER - ANNOUNCEMENTS
@@ -51,26 +50,32 @@ export type IAnnouncementResponse = {
 }
 
 export async function getAnnouncements(organization: string): Promise<IAnnouncement[]> {
-    let finalAnnouncements = []
-    await axios.get(organization)
-          .then(function (response) {
-            const jsonData = csvJSON(response.data)
-              if (jsonData[0].title !== 'title') {
-                 finalAnnouncements = jsonData.map(item => {
-                    if (item.title && item.date && item.time && item.description) {
-                        const newDate = moment(item.date + item.time, 'YYYY-MM-DDLT').toDate()
-                        return {
-                            date: newDate,
-                            title: item.title,
-                            description: item.description
-                        }
-                    }
-                }).filter(item => {return item !== undefined})
+    try {
+      const rawData = await fetchText(organization, {
+        headers: { "Content-Type": "text/plain" },
+      })
+      const jsonData = csvJSON(rawData)
+
+      if (jsonData[0]?.title === "title") {
+        return []
+      }
+
+      return jsonData
+        .map((item) => {
+          if (item.title && item.date && item.time && item.description) {
+            const newDate = moment(item.date + item.time, "YYYY-MM-DDLT").toDate()
+            return {
+              date: newDate,
+              title: item.title,
+              description: item.description,
             }
-          })
-          .catch(function (error) {
-            // handle error
-            console.log(error);
-          })
-    return finalAnnouncements;
-}
+          }
+
+          return undefined
+        })
+        .filter((item): item is IAnnouncement => item !== undefined)
+    } catch (error) {
+      console.log(error)
+      return []
+    }
+} 

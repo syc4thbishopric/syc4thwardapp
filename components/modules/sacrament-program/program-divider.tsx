@@ -1,22 +1,26 @@
+import { Box, Divider as MuiDivider, type SxProps, type Theme, Typography } from "@mui/material"
+
 export type IProgramDivider = {
   text?: string
-  className?: string
-  fontClass?: string
-  borderClass?: string
+  sx?: SxProps<Theme>
 }
 
-const ProgramDivider = ({ text, className = "", fontClass = "", borderClass = "border-gray-700" }: IProgramDivider) => {
+const ProgramDivider = ({ text, sx }: IProgramDivider) => {
   return (
-    <div className={`${className} relative`}>
-      <div className="absolute inset-0 flex items-center" aria-hidden="true">
-        <div className={`w-full border-t ${borderClass}`}></div>
-      </div>
+    <Box sx={{ position: "relative", py: text ? 1 : 0, ...sx }}>
+      <MuiDivider sx={{ borderColor: "grey.400" }} />
       {text && (
-        <div className="relative flex justify-center">
-          <span className={`${fontClass} px-2 bg-white`}>{text}</span>
-        </div>
+        <Box sx={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <Typography
+            component="span"
+            variant="body2"
+            sx={{ px: 1.5, bgcolor: "background.paper", color: "text.secondary", fontWeight: 300, textTransform: "uppercase", fontStyle: "italic" }}
+          >
+            {text}
+          </Typography>
+        </Box>
       )}
-    </div>
+    </Box>
   )
 }
 export default ProgramDivider

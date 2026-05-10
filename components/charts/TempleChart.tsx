@@ -1,3 +1,4 @@
+import { Box } from "@mui/material"
 import ReactECharts from 'echarts-for-react'
 import { useEffect, useState } from 'react'
 
@@ -44,14 +45,14 @@ const TempleChart = ({templeData}) => {
     }
 
     setOption(templeChartOptions)
-  },[])
+  }, [templeData.adults, templeData.youth])
 
   return (
-    <div className='bg-white shadow-xl rounded-lg border-2'>
-      <div className='px-4 py-5 sm:p-6'>
+    <Box sx={{ bgcolor: "background.paper", boxShadow: 6, borderRadius: 3, border: "2px solid", borderColor: "divider" }}>
+      <Box sx={{ px: 3, py: 4 }}>
         <ReactECharts option={option} />
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

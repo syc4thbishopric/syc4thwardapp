@@ -1,3 +1,4 @@
+import { Box, Link, Typography } from "@mui/material"
 import Divider from "../dividers/Divider"
 import { config } from "../../../config"
 
@@ -5,32 +6,36 @@ const Footer = () => {
   return (
     <>
       <Divider />
-      <footer className="bg-gray-100">
-        <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500">
-            This is <span className="underline font-semibold">not</span> an official website of{" "}
-            <a
+      <Box component="footer" sx={{ bgcolor: "background.default" }}>
+        <Box sx={{ maxWidth: 672, mx: "auto", py: 6, px: { xs: 2, sm: 3, lg: 4 } }}>
+          <Typography variant="body2" align="center" color="text.secondary">
+            This is <Box component="span" sx={{ textDecoration: "underline", fontWeight: 600 }}>not</Box> an official website of{" "}
+            <Link
               href="https://www.churchofjesuschrist.org"
               target="_blank"
-              className="whitespace-nowrap text-primary-500 hover:text-primary-900"
+              underline="hover"
+              color="primary"
               rel="noreferrer"
+              sx={{ whiteSpace: "nowrap" }}
             >
               The Church of Jesus Christ of Latter-day Saints
-            </a>
+            </Link>
             .
             <br />
-            It is operated by members of the <span className="whitespace-nowrap">{config.wardName}</span>.
+            It is operated by members of the <Box component="span" sx={{ whiteSpace: "nowrap" }}>{config.wardName}</Box>.
             <br />
-            <a
+            <Link
               href="https://www.sycamoresstake.com"
-              className="whitespace-nowrap text-primary-500 hover:text-primary-900"
+              underline="hover"
+              color="primary"
               rel="noreferrer"
+              sx={{ whiteSpace: "nowrap" }}
             >
               Return to Stake Website
-            </a>
-          </p>
-        </div>
-      </footer>
+            </Link>
+          </Typography>
+        </Box>
+      </Box>
     </>
   )
 }
