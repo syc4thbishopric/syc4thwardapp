@@ -45,7 +45,8 @@ const ensureSuccess = async (response: Response) => {
     if (response.headers.get("cf-mitigated") === "challenge") {
       throw new ApiError(
         response.status,
-        `Request to ${response.url} was blocked by a Cloudflare bot challenge before reaching the API. ` +
+        `Request to ${response.url} was blocked by a Cloudflare bot challenge before reaching the API ` +
+          `(cf-ray: ${response.headers.get("cf-ray")}, at ${new Date().toISOString()}). ` +
           "The API's Cloudflare settings need to allow server-to-server requests from this host."
       )
     }
