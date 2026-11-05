@@ -41,13 +41,22 @@ export class ApiError extends Error {
 
 const ensureSuccess = async (response: Response) => {
   if (!response.ok) {
+    // Cloudflare sets cf-mitigated when it serves a bot challenge instead of forwarding to the API
+    if (response.headers.get("cf-mitigated") === "challenge") {
+      throw new ApiError(
+        response.status,
+        `Request to ${response.url} was blocked by a Cloudflare bot challenge before reaching the API. ` +
+          "The API's Cloudflare settings need to allow server-to-server requests from this host."
+      )
+    }
+
     const message = await response.text()
     const credentialHint =
       response.status === 401 || response.status === 403 ? " Check the LDW_KEY and LDW_WARD_PATH environment variables." : ""
 
     throw new ApiError(
       response.status,
-      `Request to ${response.url} failed (${response.status}): ${message || response.statusText}${credentialHint}`
+      `Request to ${response.url} failed (${response.status}): ${(message || response.statusText).slice(0, 500)}${credentialHint}`
     )
   }
 
