@@ -15,6 +15,7 @@ import {
 import React, { useMemo } from 'react'
 import {convertAnnouncements, getAllAnnouncements} from "../shared/services/announcement.service";
 import {filterById, filterByType, setHttpHeaders} from "../shared/utils/api.util";
+import { withFallback } from "../shared/services/api-client";
 import {
     convertBannerCards,
     convertFaceCards, convertHeroCard, convertImageCards,
@@ -22,28 +23,30 @@ import {
     getDataCards,
 } from "../shared/services/data-card.service";
 import BannerCard, {IBannerCard} from "../components/modules/cards/BannerCard";
-import {config} from "../config";
+import {config, serverConfig} from "../config";
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
 import Icon from "../components/elements/icons/Icon"
 
 export const getServerSideProps = async ({ res }) => {
   setHttpHeaders(res)
-  const [announcements, dataCards] = await Promise.all([getAllAnnouncements(), getDataCards()])
+  const [announcements, dataCards] = await Promise.all([withFallback(getAllAnnouncements(), []), withFallback(getDataCards(), [])])
+  const heroCard = serverConfig.heroCardId ? filterById(dataCards, serverConfig.heroCardId) : filterByType(dataCards, "hero-card")[0]
   return {
     props: {
       announcements,
       dataCards: dataCards.sort((a, b) => a.order - b.order),
+      heroCard: heroCard ?? null,
     },
   }
 }
 
-function Home({announcements, dataCards}) {
+function Home({announcements, dataCards, heroCard}) {
   const dataBannerCards: IBannerCard[] = convertBannerCards(filterByType(dataCards, "banner-card"))
   const dataFaceCards: IContactCard[] = convertFaceCards(filterByType(dataCards, "face-card"))
   const dataMiniCards: IMiniCard[] = convertMiniCards(filterByType(dataCards, "mini-card"))
   const dataImageCards: IImageCard[] = convertImageCards(filterByType(dataCards, "image-card"))
   const dataMissionaryCards: IImageCard[] = convertImageCards(filterByType(dataCards, "missionary-card"))
-  const dataSundayMeeting: IHeroCard = convertHeroCard(filterById(dataCards, config.pages.index.heroCardId), "dark")
+  const dataSundayMeeting: IHeroCard | null = heroCard ? convertHeroCard(heroCard, "dark") : null
   const announcementSections = useMemo(
     () => [
       { title: "", items: convertAnnouncements(announcements.filter((item) => item.type === "general")) },
@@ -62,16 +65,18 @@ function Home({announcements, dataCards}) {
   return (
     <Layout>
       <Head>
-        <title>Sycamores 4th Ward</title>
+        <title>{config.wardName}</title>
       </Head>
-      <Box sx={{ position: "absolute", top: { xs: 8, md: 20 } }}>
-        <PrimaryButton type="link" link={{ url: "https://www.sycamoresstake.com/" }}>
-          <Icon name="chevron-left" className="h-5 w-5" />
-          <span>Back to Stake Site</span>
-        </PrimaryButton>
-      </Box>
+      {config.stakeUrl && (
+        <Box sx={{ position: "absolute", top: { xs: 8, md: 20 } }}>
+          <PrimaryButton type="link" link={{ url: config.stakeUrl }}>
+            <Icon name="chevron-left" className="h-5 w-5" />
+            <span>Back to Stake Site</span>
+          </PrimaryButton>
+        </Box>
+      )}
       <Box sx={{ pt: 8 }}>
-        <HeroCard {...dataSundayMeeting} />
+        {dataSundayMeeting && <HeroCard {...dataSundayMeeting} />}
       </Box>
       <Box sx={{ mb: 4 }}>
         <SectionHeader title="Announcements" subtitle="Find out more details of some of the upcoming events and activities." sx={{ pt: 5 }} />

@@ -5,12 +5,13 @@ import PageHeader from "../components/elements/headers/PageHeader"
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
 import Icon from "../components/elements/icons/Icon"
 import SectionHeader from "../components/elements/headers/SectionHeader"
+import { config } from "../config"
 
 function Welcome() {
   return (
     <>
       <Head>
-        <title>Sycamores 4th Ward - Welcome</title>
+        <title>{`${config.wardName} - Welcome`}</title>
       </Head>
       <PageHeader title="Welcome" />
       <Layout>
@@ -20,7 +21,7 @@ function Welcome() {
             <span>Back</span>
           </PrimaryButton>
         </Box>
-        <SectionHeader title="Welcome to the Maples 3rd Ward" />
+        <SectionHeader title={`Welcome to the ${config.wardName}`} />
       </Layout>
     </>
   )

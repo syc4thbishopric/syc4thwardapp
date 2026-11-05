@@ -10,13 +10,14 @@ import PrimaryButton from "../components/elements/buttons/PrimaryButton"
 import Icon from "../components/elements/icons/Icon"
 import { convertSchedules, getSchedules } from "../shared/services/schedule.service"
 import { config } from "../config"
+import { withFallback } from "../shared/services/api-client"
 import { convertImageCards, getDataCards } from "../shared/services/data-card.service"
 import ImageCard, { IImageCard } from "../components/modules/cards/ImageCard"
 import SectionHeader from "../components/elements/headers/SectionHeader"
 
 export const getServerSideProps = async ({ res }) => {
   setHttpHeaders(res)
-  const [dataCards, schedules] = await Promise.all([getDataCards(), getSchedules()])
+  const [dataCards, schedules] = await Promise.all([withFallback(getDataCards(), []), withFallback(getSchedules(), [])])
   return {
     props: {
         schedules,

@@ -2,27 +2,35 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-If npm and node are installed but this has not been done already, run
-
 ```bash
-npm install
-```
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
+cp .env.example .env   # then fill in LDW_KEY and the ward values
+yarn install
 yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## One codebase, multiple sites
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Each site (e.g. 4thward.sycamoresstake.com, 6thward.sycamoresstake.com) is a separate Vercel
+project pointing at this repo. Everything ward-specific comes from environment variables set in
+**Vercel → Project → Settings → Environment Variables**. See [.env.example](.env.example) for the
+full list.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+| Variable | Required | Example |
+| --- | --- | --- |
+| `NEXT_PUBLIC_WARD_NAME` | yes | `Sycamores 4th Ward` |
+| `LDW_WARD_PATH` | yes | `sycamores4th` |
+| `LDW_KEY` | yes | Latter Day Ward API key for that ward |
+| `NEXT_PUBLIC_STAKE_URL` | no | `https://www.sycamoresstake.com` (omit on the stake site) |
+| `NEXT_PUBLIC_GTM_ID` | no | `GTM-XXXXXXX` |
+| `LDW_HERO_CARD_ID` | no | data card ID; defaults to the first `hero-card` |
+
+The build fails if a required variable is missing. `NEXT_PUBLIC_*` values are baked in at build
+time, so redeploy after changing them.
+
+Pages under `data/` (welfare, ward mission, temple & family history, special schedules) are still
+static content in the repo and are shared by every site.
 
 ## Learn More
 

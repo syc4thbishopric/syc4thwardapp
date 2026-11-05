@@ -4,17 +4,18 @@ import {
   type DocumentHeadTagsProps,
 } from "@mui/material-nextjs/v15-pagesRouter"
 import { Head, Html, Main, NextScript, type DocumentContext, type DocumentProps } from "next/document"
+import { config } from "../config"
 
 export default function MyDocument(props: DocumentProps & DocumentHeadTagsProps) {
   return (
     <Html lang="en">
       <Head>
         <DocumentHeadTags {...props} />
-        <meta name='application-name' content='Sycamores 4th Ward' />
+        <meta name='application-name' content={config.wardName} />
         <meta name='apple-mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-status-bar-style' content='default' />
-        <meta name='apple-mobile-web-app-title' content='Sycamores 4th Ward' />
-        <meta name='description' content='Sycamores 4th Ward information App' />
+        <meta name='apple-mobile-web-app-title' content={config.wardName} />
+        <meta name='description' content={`${config.wardName} information App`} />
         <meta name='format-detection' content='telephone=no' />
         <meta name='mobile-web-app-capable' content='yes' />
         <meta name='msapplication-config' content='/icons/browserconfig.xml' />

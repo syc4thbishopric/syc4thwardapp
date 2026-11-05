@@ -23,16 +23,14 @@ const Footer = () => {
             .
             <br />
             It is operated by members of the <Box component="span" sx={{ whiteSpace: "nowrap" }}>{config.wardName}</Box>.
-            <br />
-            <Link
-              href="https://www.sycamoresstake.com"
-              underline="hover"
-              color="primary"
-              rel="noreferrer"
-              sx={{ whiteSpace: "nowrap" }}
-            >
-              Return to Stake Website
-            </Link>
+            {config.stakeUrl && (
+              <>
+                <br />
+                <Link href={config.stakeUrl} underline="hover" color="primary" rel="noreferrer" sx={{ whiteSpace: "nowrap" }}>
+                  Return to Stake Website
+                </Link>
+              </>
+            )}
           </Typography>
         </Box>
       </Box>

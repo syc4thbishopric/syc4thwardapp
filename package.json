@@ -3,48 +3,39 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "format": "prettier --config ./.prettierrc --write \"**/*.{ts,tsx,json,md,scss,css}\"",
-    "lint": "eslint . --ext .js,.ts,.tsx"
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@capacitor/android": "^5.0.3",
-    "@capacitor/cli": "^5.0.3",
-    "@capacitor/core": "^5.0.3",
-    "@capacitor/ios": "^5.0.3",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.1",
-    "@headlessui/react": "^1.4.3",
-    "@mui/icons-material": "^7.3.2",
-    "@mui/lab": "^9.0.0-beta.3",
-    "@mui/material": "^7.3.2",
-    "@mui/material-nextjs": "^7.3.2",
-    "dayjs": "^1.10.7",
-    "echarts": "^5.4.2",
-    "echarts-for-react": "^3.0.2",
+    "@mui/lab": "^7.0.0",
+    "@mui/material": "^7",
+    "@mui/material-nextjs": "^7",
+    "dayjs": "^1.11.23",
     "linkify-react": "^3.0.4",
     "linkifyjs": "^3.0.5",
-    "moment": "^2.29.4",
-    "next": "^16.2.6",
-    "next-pwa": "^5.5.5",
-    "react": "^19.2.0",
-    "react-calendly": "^2.2.3",
-    "react-dom": "^19.2.0"
+    "moment": "^2.31.0",
+    "next": "^16.4.5",
+    "react": "^19.3.1",
+    "react-calendly": "^4.4.0",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "@types/node": "^22.15.21",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "eslint": "^9.26.0",
+    "@types/node": "^24",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9",
     "eslint-config-next": "^16.2.6",
-    "postcss": "^8.4.6",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-preset-env": "^7.3.1",
-    "prettier": "^2.5.1",
-    "typescript": "^5.8.3"
+    "prettier": "^3",
+    "typescript": "^5.9"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }

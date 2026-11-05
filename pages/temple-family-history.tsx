@@ -10,12 +10,13 @@ import { dataBlockQuote, dataImageCards, dataFaceCard } from "../data/dataFamily
 import SectionHeader from "../components/elements/headers/SectionHeader"
 import Divider from "../components/elements/dividers/Divider"
 import ContactCard from "../components/modules/cards/ContactCard"
+import { config } from "../config"
 
 function TempleAndFamilyHistory() {
   return (
     <>
       <Head>
-        <title>Maples 3rd Ward - Temple &amp; Family History</title>
+        <title>{`${config.wardName} - Temple & Family History`}</title>
       </Head>
       <PageHeader title="Temple &amp; Family History" subtitle="Take the opportunity to have the basket in your home." />
       <Layout>

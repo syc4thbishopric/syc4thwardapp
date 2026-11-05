@@ -11,6 +11,7 @@ import {convertAnnouncements, getAllAnnouncements} from "../shared/services/anno
 
 import PageHeader from "../components/elements/headers/PageHeader"
 import {setHttpHeaders} from "../shared/utils/api.util";
+import { withFallback } from "../shared/services/api-client";
 import PrimaryButton from "../components/elements/buttons/PrimaryButton"
 import Icon from "../components/elements/icons/Icon"
 
@@ -18,7 +19,7 @@ export const getServerSideProps = async ({ res }) => {
   setHttpHeaders(res)
   return {
     props: {
-      announcements: await getAllAnnouncements()
+      announcements: await withFallback(getAllAnnouncements(), [])
     },
   }
 }

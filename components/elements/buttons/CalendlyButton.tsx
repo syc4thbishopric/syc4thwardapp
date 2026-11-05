@@ -1,6 +1,6 @@
 import { Button } from "@mui/material"
-import { openPopupWidget } from "react-calendly"
-import { Props } from "react-calendly/typings/components/PopupWidget/PopupWidget"
+import { useState } from "react"
+import CalendlyPopup from "./CalendlyPopup"
 
 type CalendlyButtonProps = {
   children: React.ReactNode
@@ -10,10 +10,15 @@ type CalendlyButtonProps = {
 }
 
 const CalendlyButton = ({ children, buttonProps, url, disabled }: CalendlyButtonProps) => {
+  const [popupUrl, setPopupUrl] = useState<string | null>(null)
+
   return (
-    <Button {...buttonProps} disabled={disabled} onClick={() => openPopupWidget({ url, pageSettings: {} } as Props)}>
-      {children}
-    </Button>
+    <>
+      <Button {...buttonProps} disabled={disabled} onClick={() => setPopupUrl(url)}>
+        {children}
+      </Button>
+      <CalendlyPopup url={popupUrl} onClose={() => setPopupUrl(null)} />
+    </>
   )
 }
 export default CalendlyButton

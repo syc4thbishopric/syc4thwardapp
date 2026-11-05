@@ -1,13 +1,25 @@
+/**
+ * Site configuration. Everything ward-specific comes from environment variables so the
+ * same codebase can be deployed once per ward. See .env.example for the full list.
+ *
+ * NEXT_PUBLIC_* values are inlined into the browser bundle at build time, so changing
+ * them in Vercel requires a redeploy.
+ */
 export const config = {
-  wardName: "Sycamores 4th Ward",
-  apiUrl: "https://api.latterdayward.com/api",
-  apiWard: "sycamores4th",
-  pages: {
-    index: {
-      heroCardId: "630950c41ce9f46775bb85d9",
-    },
-  },
+  wardName: process.env.NEXT_PUBLIC_WARD_NAME || "",
+  // Link back to the stake site. Leave unset on the stake site itself to hide the link.
+  stakeUrl: process.env.NEXT_PUBLIC_STAKE_URL || "",
+  gtmId: process.env.NEXT_PUBLIC_GTM_ID || "",
   httpHeaders: {
     "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
   },
+}
+
+// Server-only values (never sent to the browser)
+export const serverConfig = {
+  apiUrl: process.env.LDW_API_URL || "https://api.latterdayward.com/api",
+  apiWard: process.env.LDW_WARD_PATH || "",
+  apiKey: process.env.LDW_KEY || "",
+  // Optional: pin the home page hero to a specific data card. Defaults to the first "hero-card".
+  heroCardId: process.env.LDW_HERO_CARD_ID || "",
 }

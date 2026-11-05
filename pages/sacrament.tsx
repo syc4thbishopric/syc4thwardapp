@@ -7,13 +7,14 @@ import Layout from "../components/layouts/Layout"
 import SacramentProgram from "../components/modules/sacrament-program/sacrament-program"
 import { getSacramentProgram } from "../shared/services/sacrament-program.service"
 import { setHttpHeaders } from "../shared/utils/api.util"
+import { withFallback } from "../shared/services/api-client"
 import { getNextSunday, getScheduleDate } from "../shared/utils/date.util"
 
 export const getServerSideProps = async ({ res }) => {
   setHttpHeaders(res)
   return {
     props: {
-      responseProgram: await getSacramentProgram()
+      responseProgram: await withFallback(getSacramentProgram(), {})
     }
   }
 }

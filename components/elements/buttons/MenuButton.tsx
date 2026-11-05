@@ -1,8 +1,8 @@
 import Link from "next/link"
 import { Button, Menu, MenuItem } from "@mui/material"
 import { useState } from "react"
-import { openPopupWidget } from "react-calendly"
 import Icon from "../icons/Icon"
+import CalendlyPopup from "./CalendlyPopup"
 import { ILink } from "../../../shared/types"
 
 type MenuButtonProps = {
@@ -13,6 +13,7 @@ type MenuButtonProps = {
 
 const MenuButton = ({ children, buttonProps, links }: MenuButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [calendlyUrl, setCalendlyUrl] = useState<string | null>(null)
   const open = Boolean(anchorEl)
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -60,7 +61,13 @@ const MenuButton = ({ children, buttonProps, links }: MenuButtonProps) => {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {links.map((link: ILink) =>
           link.calendly ? (
-            <CalendlyMenuItem key={link.label?.text || link.url} label={link.label} url={link.url} onClose={handleClose} />
+            <CalendlyMenuItem
+              key={link.label?.text || link.url}
+              label={link.label}
+              url={link.url}
+              onClose={handleClose}
+              onSelect={setCalendlyUrl}
+            />
           ) : (
             <LinkMenuItem
               key={link.label?.text || link.url}
@@ -72,17 +79,18 @@ const MenuButton = ({ children, buttonProps, links }: MenuButtonProps) => {
           )
         )}
       </Menu>
+      <CalendlyPopup url={calendlyUrl} onClose={() => setCalendlyUrl(null)} />
     </>
   )
 }
 export default MenuButton
 
-const CalendlyMenuItem = ({ label, url, onClose }) => {
+const CalendlyMenuItem = ({ label, url, onClose, onSelect }) => {
   return (
     <MenuItem
       onClick={() => {
         onClose()
-        openPopupWidget({ url })
+        onSelect(url)
       }}
     >
       {label.text}

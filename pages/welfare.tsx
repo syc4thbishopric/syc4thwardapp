@@ -11,12 +11,13 @@ import { dataHeroCard, dataBlockQuote, dataImageCards, dataFaceCard } from "../d
 import SectionHeader from "../components/elements/headers/SectionHeader"
 import Divider from "../components/elements/dividers/Divider"
 import ContactCard from "../components/modules/cards/ContactCard"
+import { config } from "../config"
 
 function Welfare() {
   return (
     <>
       <Head>
-        <title>Maples 3rd Ward - Welfare &amp; Service </title>
+        <title>{`${config.wardName} - Welfare & Service`}</title>
       </Head>
       <PageHeader title="Welfare &amp; Service" subtitle="Giving your time to those in need is giving your time to your Heavenly Father" />
       <Layout>

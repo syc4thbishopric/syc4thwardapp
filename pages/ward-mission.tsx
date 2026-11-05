@@ -9,12 +9,13 @@ import SectionHeader from "../components/elements/headers/SectionHeader"
 import Divider from "../components/elements/dividers/Divider"
 import ContactCard from "../components/modules/cards/ContactCard"
 import { dataHeroCard, dataFaceCard } from "../data/dataWardMission"
+import { config } from "../config"
 
 function WardMission() {
   return (
     <>
       <Head>
-        <title>Ward Mission</title>
+        <title>{`${config.wardName} - Ward Mission`}</title>
       </Head>
       <PageHeader title="Ward Mission" />
       <Layout>
